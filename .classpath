@@ -7,10 +7,7 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/first/Downloads/lombok.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="lib" path="lib/apache-commons-codec-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/lombok.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
