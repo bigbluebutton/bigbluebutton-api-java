@@ -55,18 +55,4 @@ public class BBBMeeting {
 		if (meta.containsKey(key))
 			meta.remove(key);
 	}
-	
-//	private String siteId = null;
-//	private String ownerId = null;
-//	private String ownerDisplayName = null;
-
-//	private Boolean waitForModerator = null;
-//	private Boolean multipleSessionsAllowed = null;
-//	private String presentation = null;
-//	private Boolean groupSessions = null;
-//	private Boolean deleted = null;
-//	private String recordingEmail = null;
-	
-//	private String joinUrl = null;
-//	private String hostUrl = null;
 }

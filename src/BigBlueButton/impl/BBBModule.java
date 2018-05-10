@@ -72,9 +72,8 @@ public class BBBModule {
 				file += line + "\n";
 			br.close();
 			byte[] bytes = Base64.encodeBase64(file.getBytes());
-//			xml += bytes.toString();
 			for (byte b : bytes)
-				xml += b;
+				xml += (char)b;
 			xml += "</document>";
 		}
 		xml += "</module>";
