@@ -437,20 +437,11 @@ public class BaseBBBAPI implements BBBAPI {
             byte[] b = input.readAllBytes();
             input.close();
             String xml = "";
-            for (byte a : b) {
+            for (byte a : b)
             	xml += (char)a;
-            }
-            System.out.println(xml);
             query.append("&configXML=" + encode(xml));
 
             Map<String, Object> response = doAPICall(APICALL_SETCONFIGXML, query.toString());
-            
-            System.out.println("In function: ");
-            for (Entry<String, Object> e : response.entrySet()) {
-    			System.out.println("Key: " + e.getKey() + " value: " + e.getValue());
-    		}
-            System.out.println("End of function");
-            
             return response.get("returncode").toString().equals("SUCCESS") ? true : false;
     	} catch (BBBException e) {
     		throw e;
@@ -525,7 +516,6 @@ public class BaseBBBAPI implements BBBAPI {
         try {
             // open connection
             URL url = new URL(urlStr.toString());
-            System.out.println(urlStr.toString());
             HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
             httpConnection.setUseCaches(false);
             httpConnection.setDoOutput(true);
