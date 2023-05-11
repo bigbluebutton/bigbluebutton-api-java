@@ -1,4 +1,15 @@
 
+# BigBlueButton API for Java
+
+![Home Image](https://raw.githubusercontent.com/wiki/bigbluebutton/bigbluebutton-api-java/images/header.png)
+
+Requirements: JVM 11
+
+```bash
+mvn formatter:format && mvn package
+```
+
+--- OLD NOTES ---
 Special note:  
 1. This project used Lombok library, if you want to deploy this project, make sure you have Lombok installed. To install, follow the following steps:  
 	- download from https://projectlombok.org/download
