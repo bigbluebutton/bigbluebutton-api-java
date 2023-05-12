@@ -21,7 +21,7 @@ package org.bigbluebutton.api;
 import lombok.Getter;
 
 public enum ApiMethod {
-    CREATE("create"), JOIN("join"), INSERT_DOCUMENT("insertDocument"), ENTER("enter"), END("end"),
+    ROOT(""), CREATE("create"), JOIN("join"), INSERT_DOCUMENT("insertDocument"), ENTER("enter"), END("end"),
     IS_MEETING_RUNNING("isMeetingRunning"), GET_MEETING_INFO("getMeetingInfo"), GET_MEETINGS("getMeetings"),
     SIGN_OUT("signOut"), GET_RECORDINGS("getRecordings"), PUBLISH_RECORDINGS("publishRecordings"),
     DELETE_RECORDINGS("deleteRecordings"), UPDATE_RECORDINGS("updateRecordings"),

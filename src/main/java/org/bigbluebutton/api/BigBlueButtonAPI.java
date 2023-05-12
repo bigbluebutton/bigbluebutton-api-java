@@ -18,7 +18,22 @@
 
 package org.bigbluebutton.api;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
+import org.bigbluebutton.api.handlers.ApiResponseHandler;
 import org.bigbluebutton.api.responses.ApiVersionResponse;
+import org.bigbluebutton.api.util.URLBuilder;
+import org.xml.sax.SAXException;
+
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -33,16 +48,40 @@ public class BigBlueButtonAPI {
     @Setter
     protected String baseServerURL;
 
+    protected URLBuilder urlBuilder;
+
+    /**
+     * Jackson XML mapper to transform responses to objects
+     */
+    private XmlMapper xmlMapper;
+
     public BigBlueButtonAPI() {
         this(System.getenv("BBB_SERVER_BASE_URL"), System.getenv("BBB_SECURITY_SALT"));
     }
 
     public BigBlueButtonAPI(String baseUrl, String securitySalt) {
         this.baseServerURL = baseUrl;
-        this.securitySalt  = securitySalt;
+        this.securitySalt = securitySalt;
+        this.xmlMapper = new XmlMapper();
+        this.urlBuilder = new URLBuilder(baseUrl, securitySalt);
     }
 
-    public ApiVersionResponse getAPIVersion() {
-        return new ApiVersionResponse();
+    public ApiVersionResponse getAPIVersion() throws MalformedURLException, IOException, ParserConfigurationException,
+            SAXException, InterruptedException, URISyntaxException {
+        return xmlMapper.readValue(this.sendRequest(urlBuilder.buildUrl(ApiMethod.ROOT, "")), ApiVersionResponse.class);
+    }
+
+    protected String sendRequest(URI uri) throws MalformedURLException, IOException, ParserConfigurationException,
+            SAXException, InterruptedException {
+        return this.sendRequest(uri, "", "application/xml");
+    }
+
+    protected String sendRequest(URI uri, String payload, String contentType) throws MalformedURLException, IOException,
+            ParserConfigurationException, SAXException, InterruptedException {
+        // Open a connection to the API endpoint
+        HttpClient httpClient = HttpClientBuilder.create().build();
+        HttpGet httpGet = new HttpGet(uri);
+        ApiResponseHandler apiResponseHandler = new ApiResponseHandler();
+        return httpClient.execute(httpGet, apiResponseHandler);
     }
 }

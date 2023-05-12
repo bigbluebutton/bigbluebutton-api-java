@@ -18,12 +18,25 @@
 
 package org.bigbluebutton.api.responses;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import lombok.Getter;
 
-public class BaseResponse {
+@JacksonXmlRootElement(localName = "response")
+public abstract class BaseResponse {
     @Getter
-    protected APIReturnCode returnCode;
+    @JacksonXmlProperty(localName = "returncode")
+    private String returnCode;
 
     @Getter
     protected String message;
+
+    public Boolean success() {
+        return returnCode.equals(APIReturnCode.SUCCESS.getReturnCode());
+    }
+
+    public Boolean failed() {
+        return returnCode.equals(APIReturnCode.FAILED.getReturnCode());
+    }
 }

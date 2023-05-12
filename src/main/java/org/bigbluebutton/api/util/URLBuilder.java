@@ -19,13 +19,19 @@
 package org.bigbluebutton.api.util;
 
 import java.net.URI;
+import java.net.URISyntaxException;
+
+import org.apache.hc.core5.net.URIBuilder;
+import org.bigbluebutton.api.ApiMethod;
 
 import lombok.Getter;
 
 public class URLBuilder {
 
     @Getter
-    private URI uri;
+    private URI baseUri;
+
+    private final String apiPrefix = "api";
 
     @Getter
     private String sharedSecret;
@@ -35,7 +41,11 @@ public class URLBuilder {
     }
 
     public URLBuilder(URI uri, String sharedSecret) {
-        this.uri = uri;
+        this.baseUri      = uri;
         this.sharedSecret = sharedSecret;
+    }
+
+    public URI buildUrl(ApiMethod apiMethod, String params) throws URISyntaxException {
+        return new URIBuilder(baseUri + apiPrefix + apiMethod.getName()).build();
     }
 }

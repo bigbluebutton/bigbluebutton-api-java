@@ -18,6 +18,17 @@
 
 package org.bigbluebutton.api.responses;
 
-public class ApiVersionResponse extends BaseResponse {
+import lombok.Getter;
+import lombok.Setter;
 
+public class ApiVersionResponse extends BaseResponse {
+    @Getter
+    @Setter
+    private String version;
+    @Getter
+    @Setter
+    private String apiVersion;
+    @Getter
+    @Setter
+    private String bbbVersion;
 }
