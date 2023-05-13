@@ -66,9 +66,9 @@ public class BigBlueButtonAPI {
 
     public BigBlueButtonAPI(String baseUrl, String securitySalt) {
         this.baseServerURL = baseUrl;
-        this.securitySalt = securitySalt;
-        this.xmlMapper = new XmlMapper();
-        this.urlBuilder = new URLBuilder(baseUrl, securitySalt);
+        this.securitySalt  = securitySalt;
+        this.xmlMapper     = new XmlMapper();
+        this.urlBuilder    = new URLBuilder(baseUrl, securitySalt);
     }
 
     public URI getApiVersionURL() throws URISyntaxException {
@@ -100,8 +100,8 @@ public class BigBlueButtonAPI {
     protected String sendRequest(URI uri, String payload, String contentType) throws MalformedURLException, IOException,
             ParserConfigurationException, SAXException, InterruptedException {
         // Open a connection to the API endpoint
-        HttpClient httpClient = HttpClientBuilder.create().build();
-        HttpGet httpGet = new HttpGet(uri);
+        HttpClient         httpClient         = HttpClientBuilder.create().build();
+        HttpGet            httpGet            = new HttpGet(uri);
         ApiResponseHandler apiResponseHandler = new ApiResponseHandler();
         return httpClient.execute(httpGet, apiResponseHandler);
     }

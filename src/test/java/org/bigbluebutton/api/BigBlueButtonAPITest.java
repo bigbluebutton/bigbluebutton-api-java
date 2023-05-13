@@ -63,8 +63,8 @@ public class BigBlueButtonAPITest extends BigBlueButtonTestCase {
     @DisplayName("BigBlueButton Create meeting")
     public void shouldCreateMeeting() throws JsonMappingException, JsonProcessingException, MalformedURLException,
             IOException, ParserConfigurationException, SAXException, InterruptedException, URISyntaxException {
-        CreateMeetingParameters createMeetingParms    = generateCreateMeetingParams();
-        CreateMeetingResponse   createMeetingResponse = bbbAPI.createMeeting(createMeetingParms);
+        CreateMeetingParameters createMeetingParms = generateCreateMeetingParams();
+        CreateMeetingResponse createMeetingResponse = bbbAPI.createMeeting(createMeetingParms);
         assertEquals(createMeetingResponse.getReturnCode(), "SUCCESS");
         assertEquals(createMeetingResponse.getMeetingId(), createMeetingParms.getMeetingId());
     }

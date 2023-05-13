@@ -37,10 +37,10 @@ public class BigBlueButtonTestCase {
     }
 
     protected CreateMeetingParameters generateCreateMeetingParams() {
-        Map<String, Object>     mockCreate   = mockCreateMeetingParams();
+        Map<String, Object> mockCreate = mockCreateMeetingParams();
         CreateMeetingParameters createParams = new CreateMeetingParameters((String) mockCreate.get(ApiParams.NAME),
                 (String) mockCreate.get(ApiParams.MEETING_ID)).setDuration(faker.number().numberBetween(0, 10))
-                .setRecord(faker.bool().bool());
+                        .setRecord(faker.bool().bool());
         return createParams;
 
     }
