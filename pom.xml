@@ -72,6 +72,7 @@
 
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
+		<testSourceDirectory>src/test/java</testSourceDirectory>
 		<plugins>
 			<plugin>
 				<artifactId>maven-clean-plugin</artifactId>
@@ -146,7 +147,7 @@
 				<executions>
 					<execution>
 						<goals>
-							<goal>validate</goal>
+							<!--goal>validate</goal-->
 						</goals>
 					</execution>
 				</executions>

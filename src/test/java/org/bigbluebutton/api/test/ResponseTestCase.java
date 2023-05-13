@@ -16,34 +16,33 @@
  * with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.bigbluebutton.api.responses;
+package org.bigbluebutton.api.test;
 
-import java.net.URI;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
-import lombok.Getter;
+import org.junit.jupiter.api.BeforeEach;
 
-public class JoinMeetingResponse extends BaseResponse {
-    @Getter
-    @JacksonXmlProperty(localName = "meeting_id")
-    private String meetingId;
+public abstract class ResponseTestCase extends BaseTestCase {
 
-    @Getter
-    @JacksonXmlProperty(localName = "user_id")
-    private String userId;
+    protected String xmlResponseFile;
 
-    @Getter
-    @JacksonXmlProperty(localName = "auth_token")
-    private String authToken;
+    protected byte[] xmlInput;
 
-    @Getter
-    @JacksonXmlProperty(localName = "session_token")
-    private String sessionToken;
+    @BeforeEach
+    public void setUp() {
+        super.setUp();
+        try {
+            xmlInput = Files.readAllBytes(Paths.get(
+                    new File(getClass().getClassLoader().getResource(xmlResponseFile).getFile()).getAbsolutePath()));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            fail("Failed loading fixutre: " + xmlResponseFile);
+        }
+    }
 
-    @Getter
-    private String guestStatus;
-
-    @Getter
-    private URI url;
 }

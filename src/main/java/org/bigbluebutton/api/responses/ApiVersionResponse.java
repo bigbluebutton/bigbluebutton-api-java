@@ -25,9 +25,11 @@ public class ApiVersionResponse extends BaseResponse {
     @Getter
     @Setter
     private String version;
+
     @Getter
     @Setter
     private String apiVersion;
+
     @Getter
     @Setter
     private String bbbVersion;

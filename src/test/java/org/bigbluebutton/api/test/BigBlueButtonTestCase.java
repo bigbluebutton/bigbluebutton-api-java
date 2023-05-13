@@ -39,16 +39,16 @@ public class BigBlueButtonTestCase extends BaseTestCase {
     }
 
     protected CreateMeetingParameters generateCreateMeetingParams() {
-        Map<String, Object> mockCreate = mockCreateMeetingParams();
+        Map<String, Object>     mockCreate   = mockCreateMeetingParams();
         CreateMeetingParameters createParams = new CreateMeetingParameters((String) mockCreate.get(ApiParams.NAME),
                 (String) mockCreate.get(ApiParams.MEETING_ID)).setDuration(faker.number().numberBetween(0, 10))
-                        .setRecord(faker.bool().bool());
+                .setRecord(faker.bool().bool());
         return createParams;
 
     }
 
     protected EndMeetingParameters generateEndMeetingParams() {
-        Map<String, Object> mockEnd = mockEndMeetingParams();
+        Map<String, Object>  mockEnd   = mockEndMeetingParams();
         EndMeetingParameters endParams = new EndMeetingParameters((String) mockEnd.get(ApiParams.MEETING_ID));
         return endParams;
 

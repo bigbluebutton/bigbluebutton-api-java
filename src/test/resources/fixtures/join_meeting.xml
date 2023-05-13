@@ -1,0 +1,11 @@
+<response>
+    <returncode>SUCCESS</returncode>
+    <messageKey>successfullyJoined</messageKey>
+    <message>You have joined successfully.</message>
+    <meeting_id>bec8af173fae4d1f45d8ed6ea7c0b1ffb93af020-1464618265614</meeting_id>
+    <user_id>ao6ehbtvbmhz</user_id>
+    <auth_token>huzbpgthac7s</auth_token>
+    <session_token>rbe7bbkjzx5mnoda</session_token>
+    <guestStatus>ALLOW</guestStatus>
+    <url>https://bigblubutton-server.sample/client/BigBlueButton.html?sessionToken=BKepJSKk39jtwDC9</url>
+</response>

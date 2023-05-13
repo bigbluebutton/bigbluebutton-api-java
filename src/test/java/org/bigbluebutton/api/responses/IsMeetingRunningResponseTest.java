@@ -20,21 +20,33 @@ package org.bigbluebutton.api.responses;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.bigbluebutton.api.test.BaseTestCase;
+import java.io.IOException;
+
+import org.bigbluebutton.api.test.ResponseTestCase;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class APIReturnCodeTest extends BaseTestCase {
+import com.fasterxml.jackson.core.exc.StreamReadException;
+import com.fasterxml.jackson.databind.DatabindException;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
-    @Test
-    @DisplayName("Failed API return code")
-    void failedReturnCodeShouldMatch() {
-        assertEquals(APIReturnCode.FAILED.getReturnCode(), "FAILED");
+class IsMeetingRunningResponseTest extends ResponseTestCase {
+
+    @BeforeEach
+    public void setUp() {
+        xmlResponseFile = "fixtures/is_meeting_running.xml";
+
+        super.setUp();
     }
 
     @Test
-    @DisplayName("Success API return code")
-    void successReturnCodeShouldMatch() {
-        assertEquals(APIReturnCode.SUCCESS.getReturnCode(), "SUCCESS");
+    @DisplayName("API version response content")
+    void testIsMeetingRunningResponseContent() throws StreamReadException, DatabindException, IOException {
+        XmlMapper                xmlMapper                = new XmlMapper();
+        IsMeetingRunningResponse isMeetingRunningResponse = xmlMapper.readValue(xmlInput,
+                IsMeetingRunningResponse.class);
+        assertEquals(isMeetingRunningResponse.getReturnCode(), APIReturnCode.SUCCESS.getReturnCode());
+        assertEquals(isMeetingRunningResponse.getRunning(), true);
     }
 }

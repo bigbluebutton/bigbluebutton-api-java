@@ -66,8 +66,8 @@ public class BigBlueButtonAPITest extends BigBlueButtonTestCase {
     @DisplayName("BigBlueButton Create meeting")
     public void shouldCreateMeeting() throws JsonMappingException, JsonProcessingException, MalformedURLException,
             IOException, ParserConfigurationException, SAXException, InterruptedException, URISyntaxException {
-        CreateMeetingParameters createMeetingParms = generateCreateMeetingParams();
-        CreateMeetingResponse createMeetingResponse = bbbAPI.createMeeting(createMeetingParms);
+        CreateMeetingParameters createMeetingParms    = generateCreateMeetingParams();
+        CreateMeetingResponse   createMeetingResponse = bbbAPI.createMeeting(createMeetingParms);
         assertEquals(createMeetingResponse.getReturnCode(), APIReturnCode.SUCCESS.getReturnCode());
         assertEquals(createMeetingResponse.getMeetingId(), createMeetingParms.getMeetingId());
     }
@@ -76,8 +76,8 @@ public class BigBlueButtonAPITest extends BigBlueButtonTestCase {
     @DisplayName("BigBlueButton end non existing meeting")
     public void shouldNotFindMeetingToEnd() throws JsonMappingException, JsonProcessingException, MalformedURLException,
             IOException, ParserConfigurationException, SAXException, InterruptedException, URISyntaxException {
-        EndMeetingParameters endMeetingParms = generateEndMeetingParams();
-        EndMeetingResponse endMeetingResponse = bbbAPI.endMeeting(endMeetingParms);
+        EndMeetingParameters endMeetingParms    = generateEndMeetingParams();
+        EndMeetingResponse   endMeetingResponse = bbbAPI.endMeeting(endMeetingParms);
         assertEquals(endMeetingResponse.getReturnCode(), APIReturnCode.FAILED.getReturnCode());
     }
 }
