@@ -20,10 +20,11 @@ package org.bigbluebutton.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.bigbluebutton.api.test.BaseTestCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class ApiMethodTest {
+public class ApiMethodTest extends BaseTestCase {
 
     @Test
     @DisplayName("Test API method names")

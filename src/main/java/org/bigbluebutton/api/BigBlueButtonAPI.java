@@ -31,8 +31,10 @@ import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
 import org.bigbluebutton.api.handlers.ApiResponseHandler;
 import org.bigbluebutton.api.parameters.CreateMeetingParameters;
+import org.bigbluebutton.api.parameters.EndMeetingParameters;
 import org.bigbluebutton.api.responses.ApiVersionResponse;
 import org.bigbluebutton.api.responses.CreateMeetingResponse;
+import org.bigbluebutton.api.responses.EndMeetingResponse;
 import org.bigbluebutton.api.util.URLBuilder;
 import org.xml.sax.SAXException;
 
@@ -66,9 +68,9 @@ public class BigBlueButtonAPI {
 
     public BigBlueButtonAPI(String baseUrl, String securitySalt) {
         this.baseServerURL = baseUrl;
-        this.securitySalt  = securitySalt;
-        this.xmlMapper     = new XmlMapper();
-        this.urlBuilder    = new URLBuilder(baseUrl, securitySalt);
+        this.securitySalt = securitySalt;
+        this.xmlMapper = new XmlMapper();
+        this.urlBuilder = new URLBuilder(baseUrl, securitySalt);
     }
 
     public URI getApiVersionURL() throws URISyntaxException {
@@ -80,7 +82,7 @@ public class BigBlueButtonAPI {
         return xmlMapper.readValue(this.sendRequest(getApiVersionURL()), ApiVersionResponse.class);
     }
 
-    public URI getcreateMeetingURL(CreateMeetingParameters createMeetingParams)
+    public URI getCreateMeetingURL(CreateMeetingParameters createMeetingParams)
             throws URISyntaxException, UnsupportedEncodingException {
         return urlBuilder.buildUrl(ApiMethod.CREATE, createMeetingParams.getQueryParms());
     }
@@ -88,8 +90,25 @@ public class BigBlueButtonAPI {
     public CreateMeetingResponse createMeeting(CreateMeetingParameters createMeetingParams)
             throws JsonMappingException, JsonProcessingException, MalformedURLException, IOException,
             ParserConfigurationException, SAXException, InterruptedException, URISyntaxException {
-        return xmlMapper.readValue(this.sendRequest(getcreateMeetingURL(createMeetingParams)),
-                CreateMeetingResponse.class);
+        return sendApiRequest(getCreateMeetingURL(createMeetingParams), CreateMeetingResponse.class);
+
+    }
+
+    public URI getEndMeetingURL(EndMeetingParameters endMeetingParams)
+            throws URISyntaxException, UnsupportedEncodingException {
+        return urlBuilder.buildUrl(ApiMethod.END, endMeetingParams.getQueryParms());
+    }
+
+    public EndMeetingResponse endMeeting(EndMeetingParameters endMeetingParams)
+            throws JsonMappingException, JsonProcessingException, MalformedURLException, IOException,
+            ParserConfigurationException, SAXException, InterruptedException, URISyntaxException {
+        return sendApiRequest(getEndMeetingURL(endMeetingParams), EndMeetingResponse.class);
+    }
+
+    public <T> T sendApiRequest(URI uri, Class<T> responseType)
+            throws JsonMappingException, JsonProcessingException, MalformedURLException, IOException,
+            ParserConfigurationException, SAXException, InterruptedException, URISyntaxException {
+        return xmlMapper.readValue(this.sendRequest(uri), responseType);
     }
 
     protected String sendRequest(URI uri) throws MalformedURLException, IOException, ParserConfigurationException,
@@ -100,8 +119,8 @@ public class BigBlueButtonAPI {
     protected String sendRequest(URI uri, String payload, String contentType) throws MalformedURLException, IOException,
             ParserConfigurationException, SAXException, InterruptedException {
         // Open a connection to the API endpoint
-        HttpClient         httpClient         = HttpClientBuilder.create().build();
-        HttpGet            httpGet            = new HttpGet(uri);
+        HttpClient httpClient = HttpClientBuilder.create().build();
+        HttpGet httpGet = new HttpGet(uri);
         ApiResponseHandler apiResponseHandler = new ApiResponseHandler();
         return httpClient.execute(httpGet, apiResponseHandler);
     }

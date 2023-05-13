@@ -220,7 +220,7 @@ public class CreateMeetingParameters extends BaseParameters {
     protected String presentationUploadExternalDescription;
 
     public CreateMeetingParameters(String name, String meetingId) {
-        this.name      = name;
+        this.name = name;
         this.meetingId = meetingId;
     }
 

@@ -46,7 +46,7 @@ public class URLBuilder {
     }
 
     public URLBuilder(URI uri, String sharedSecret) {
-        this.baseUri      = uri;
+        this.baseUri = uri;
         this.sharedSecret = sharedSecret;
     }
 
@@ -55,8 +55,8 @@ public class URLBuilder {
     }
 
     public URI buildUrl(ApiMethod apiMethod, List<NameValuePair> params) throws URISyntaxException {
-        URIBuilder builder  = new URIBuilder(baseUri + apiPrefix + "/" + apiMethod.getName()).addParameters(params);
-        String     checksum = this.calculateChecksum(apiMethod, builder.getQueryParams());
+        URIBuilder builder = new URIBuilder(baseUri + apiPrefix + "/" + apiMethod.getName()).addParameters(params);
+        String checksum = this.calculateChecksum(apiMethod, builder.getQueryParams());
         return builder.addParameter("checksum", checksum).build();
     }
 

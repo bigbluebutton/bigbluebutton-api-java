@@ -23,16 +23,18 @@ import java.util.Map;
 
 import org.bigbluebutton.api.ApiParams;
 import org.bigbluebutton.api.parameters.CreateMeetingParameters;
+import org.bigbluebutton.api.parameters.EndMeetingParameters;
 import org.junit.jupiter.api.BeforeEach;
 
 import com.github.javafaker.Faker;
 
-public class BigBlueButtonTestCase {
+public class BigBlueButtonTestCase extends BaseTestCase {
 
     private Faker faker;
 
     @BeforeEach
     public void setUp() {
+        super.setUp();
         faker = new Faker();
     }
 
@@ -45,9 +47,22 @@ public class BigBlueButtonTestCase {
 
     }
 
+    protected EndMeetingParameters generateEndMeetingParams() {
+        Map<String, Object> mockEnd = mockEndMeetingParams();
+        EndMeetingParameters endParams = new EndMeetingParameters((String) mockEnd.get(ApiParams.MEETING_ID));
+        return endParams;
+
+    }
+
     protected Map<String, Object> mockCreateMeetingParams() {
         Map<String, Object> paramsMap = new HashMap<>();
         paramsMap.put(ApiParams.NAME, faker.educator().course());
+        paramsMap.put(ApiParams.MEETING_ID, faker.code().isbn10());
+        return paramsMap;
+    }
+
+    protected Map<String, Object> mockEndMeetingParams() {
+        Map<String, Object> paramsMap = new HashMap<>();
         paramsMap.put(ApiParams.MEETING_ID, faker.code().isbn10());
         return paramsMap;
     }

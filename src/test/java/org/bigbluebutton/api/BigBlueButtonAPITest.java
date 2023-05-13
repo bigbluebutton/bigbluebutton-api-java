@@ -27,8 +27,11 @@ import java.net.URISyntaxException;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.bigbluebutton.api.parameters.CreateMeetingParameters;
+import org.bigbluebutton.api.parameters.EndMeetingParameters;
+import org.bigbluebutton.api.responses.APIReturnCode;
 import org.bigbluebutton.api.responses.ApiVersionResponse;
 import org.bigbluebutton.api.responses.CreateMeetingResponse;
+import org.bigbluebutton.api.responses.EndMeetingResponse;
 import org.bigbluebutton.api.test.BigBlueButtonTestCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -65,7 +68,16 @@ public class BigBlueButtonAPITest extends BigBlueButtonTestCase {
             IOException, ParserConfigurationException, SAXException, InterruptedException, URISyntaxException {
         CreateMeetingParameters createMeetingParms = generateCreateMeetingParams();
         CreateMeetingResponse createMeetingResponse = bbbAPI.createMeeting(createMeetingParms);
-        assertEquals(createMeetingResponse.getReturnCode(), "SUCCESS");
+        assertEquals(createMeetingResponse.getReturnCode(), APIReturnCode.SUCCESS.getReturnCode());
         assertEquals(createMeetingResponse.getMeetingId(), createMeetingParms.getMeetingId());
+    }
+
+    @Test
+    @DisplayName("BigBlueButton end non existing meeting")
+    public void shouldNotFindMeetingToEnd() throws JsonMappingException, JsonProcessingException, MalformedURLException,
+            IOException, ParserConfigurationException, SAXException, InterruptedException, URISyntaxException {
+        EndMeetingParameters endMeetingParms = generateEndMeetingParams();
+        EndMeetingResponse endMeetingResponse = bbbAPI.endMeeting(endMeetingParms);
+        assertEquals(endMeetingResponse.getReturnCode(), APIReturnCode.FAILED.getReturnCode());
     }
 }

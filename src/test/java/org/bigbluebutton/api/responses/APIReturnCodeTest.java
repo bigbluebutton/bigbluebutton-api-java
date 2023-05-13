@@ -20,10 +20,11 @@ package org.bigbluebutton.api.responses;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.bigbluebutton.api.test.BaseTestCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class APIReturnCodeTest {
+class APIReturnCodeTest extends BaseTestCase {
 
     @Test
     @DisplayName("Failed API return code")

@@ -16,21 +16,27 @@
  * with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.bigbluebutton.api.enums;
+package org.bigbluebutton.api.test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.bigbluebutton.api.logging.MemoryAppender;
+import org.junit.jupiter.api.BeforeEach;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
 
-import org.bigbluebutton.api.test.BaseTestCase;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import ch.qos.logback.classic.LoggerContext;
 
-public class GuestPolicyTest extends BaseTestCase {
+public abstract class BaseTestCase {
 
-    @Test
-    @DisplayName("Test guest policy names")
-    void featureNamesShouldMatch() {
-        assertEquals(GuestPolicy.ALWAYS_ACCEPT.getName(), "ALWAYS_ACCEPT");
-        assertEquals(GuestPolicy.ALWAYS_DENY.getName(), "ALWAYS_DENY");
-        assertEquals(GuestPolicy.ASK_MODERATOR.getName(), "ASK_MODERATOR");
+    private MemoryAppender memoryAppender;
+
+    @BeforeEach
+    public void setUp() {
+        Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
+        memoryAppender = new MemoryAppender();
+        memoryAppender.setContext((LoggerContext) LoggerFactory.getILoggerFactory());
+        logger.atLevel(Level.DEBUG);
+        memoryAppender.start();
     }
+
 }

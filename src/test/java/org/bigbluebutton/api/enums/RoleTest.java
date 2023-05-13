@@ -20,10 +20,11 @@ package org.bigbluebutton.api.enums;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.bigbluebutton.api.test.BaseTestCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class RoleTest {
+public class RoleTest extends BaseTestCase {
 
     @Test
     @DisplayName("Test role names")

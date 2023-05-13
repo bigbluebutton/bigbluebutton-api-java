@@ -76,9 +76,9 @@ public class JoinMeetingParameters extends BaseParameters {
     protected Boolean excludeFromDashboard;
 
     public JoinMeetingParameters(String fullName, String meetingId, Role role) {
-        this.fullName  = fullName;
+        this.fullName = fullName;
         this.meetingId = meetingId;
-        this.role      = role;
+        this.role = role;
     }
 
     public List<NameValuePair> getQueryParms() throws UnsupportedEncodingException {
