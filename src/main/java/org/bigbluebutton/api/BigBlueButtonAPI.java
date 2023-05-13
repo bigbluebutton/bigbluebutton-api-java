@@ -19,6 +19,7 @@
 package org.bigbluebutton.api;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -29,10 +30,14 @@ import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
 import org.bigbluebutton.api.handlers.ApiResponseHandler;
+import org.bigbluebutton.api.parameters.CreateMeetingParameters;
 import org.bigbluebutton.api.responses.ApiVersionResponse;
+import org.bigbluebutton.api.responses.CreateMeetingResponse;
 import org.bigbluebutton.api.util.URLBuilder;
 import org.xml.sax.SAXException;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import lombok.Getter;
@@ -66,9 +71,25 @@ public class BigBlueButtonAPI {
         this.urlBuilder = new URLBuilder(baseUrl, securitySalt);
     }
 
+    public URI getApiVersionURL() throws URISyntaxException {
+        return urlBuilder.buildUrl(ApiMethod.ROOT);
+    }
+
     public ApiVersionResponse getAPIVersion() throws MalformedURLException, IOException, ParserConfigurationException,
             SAXException, InterruptedException, URISyntaxException {
-        return xmlMapper.readValue(this.sendRequest(urlBuilder.buildUrl(ApiMethod.ROOT, "")), ApiVersionResponse.class);
+        return xmlMapper.readValue(this.sendRequest(getApiVersionURL()), ApiVersionResponse.class);
+    }
+
+    public URI getcreateMeetingURL(CreateMeetingParameters createMeetingParams)
+            throws URISyntaxException, UnsupportedEncodingException {
+        return urlBuilder.buildUrl(ApiMethod.CREATE, createMeetingParams.getQueryParms());
+    }
+
+    public CreateMeetingResponse createMeeting(CreateMeetingParameters createMeetingParams)
+            throws JsonMappingException, JsonProcessingException, MalformedURLException, IOException,
+            ParserConfigurationException, SAXException, InterruptedException, URISyntaxException {
+        return xmlMapper.readValue(this.sendRequest(getcreateMeetingURL(createMeetingParams)),
+                CreateMeetingResponse.class);
     }
 
     protected String sendRequest(URI uri) throws MalformedURLException, IOException, ParserConfigurationException,

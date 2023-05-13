@@ -20,8 +20,13 @@ package org.bigbluebutton.api.util;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.net.URIBuilder;
+import org.apache.hc.core5.net.URLEncodedUtils;
 import org.bigbluebutton.api.ApiMethod;
 
 import lombok.Getter;
@@ -45,7 +50,18 @@ public class URLBuilder {
         this.sharedSecret = sharedSecret;
     }
 
-    public URI buildUrl(ApiMethod apiMethod, String params) throws URISyntaxException {
-        return new URIBuilder(baseUri + apiPrefix + apiMethod.getName()).build();
+    public URI buildUrl(ApiMethod apiMethod) throws URISyntaxException {
+        return this.buildUrl(apiMethod, null);
+    }
+
+    public URI buildUrl(ApiMethod apiMethod, List<NameValuePair> params) throws URISyntaxException {
+        URIBuilder builder  = new URIBuilder(baseUri + apiPrefix + "/" + apiMethod.getName()).addParameters(params);
+        String     checksum = this.calculateChecksum(apiMethod, builder.getQueryParams());
+        return builder.addParameter("checksum", checksum).build();
+    }
+
+    private String calculateChecksum(ApiMethod apiMethod, List<NameValuePair> queryParams) {
+        return DigestUtils.sha1Hex(
+                apiMethod.getName() + URLEncodedUtils.format(queryParams, StandardCharsets.UTF_8) + this.sharedSecret);
     }
 }

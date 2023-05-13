@@ -18,28 +18,43 @@
 
 package org.bigbluebutton.api.responses;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import lombok.Getter;
 
-@JacksonXmlRootElement(localName = "response")
-public abstract class BaseResponse {
+@JsonIgnoreProperties(value = { "attendeePW", "moderatorPW" })
+public class CreateMeetingResponse extends BaseResponse {
     @Getter
-    @JacksonXmlProperty(localName = "returncode")
-    private String returnCode;
-
-    @Getter
-    protected String message;
+    @JacksonXmlProperty(localName = "meetingID")
+    private String meetingId;
 
     @Getter
-    protected String messageKey;
+    @JacksonXmlProperty(localName = "internalMeetingID")
+    private String internalMeetingId;
 
-    public Boolean success() {
-        return returnCode.equals(APIReturnCode.SUCCESS.getReturnCode());
-    }
+    @Getter
+    @JacksonXmlProperty(localName = "parentMeetingID")
+    private String parnetMeetingId;
 
-    public Boolean failed() {
-        return returnCode.equals(APIReturnCode.FAILED.getReturnCode());
-    }
+    @Getter
+    private String createTime;
+
+    @Getter
+    private String voiceBridge;
+
+    @Getter
+    private String dialNumber;
+
+    @Getter
+    private String createDate;
+
+    @Getter
+    private String hasUserJoined;
+
+    @Getter
+    private String duration;
+
+    @Getter
+    private String hasBeenForciblyEnded;
 }

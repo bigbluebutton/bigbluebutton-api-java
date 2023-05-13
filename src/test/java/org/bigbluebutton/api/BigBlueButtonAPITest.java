@@ -26,18 +26,25 @@ import java.net.URISyntaxException;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.bigbluebutton.api.parameters.CreateMeetingParameters;
 import org.bigbluebutton.api.responses.ApiVersionResponse;
+import org.bigbluebutton.api.responses.CreateMeetingResponse;
+import org.bigbluebutton.api.test.BigBlueButtonTestCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
-public class BigBlueButtonAPITest {
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+
+public class BigBlueButtonAPITest extends BigBlueButtonTestCase {
 
     private BigBlueButtonAPI bbbAPI;
 
     @BeforeEach
     public void setUp() {
+        super.setUp();
         bbbAPI = new BigBlueButtonAPI();
     }
 
@@ -50,5 +57,15 @@ public class BigBlueButtonAPITest {
         assertEquals(apiVersion.getApiVersion(), "2.0");
         assertEquals(apiVersion.getVersion(), "2.0");
         assertEquals(apiVersion.getBbbVersion(), "");
+    }
+
+    @Test
+    @DisplayName("BigBlueButton Create meeting")
+    public void shouldCreateMeeting() throws JsonMappingException, JsonProcessingException, MalformedURLException,
+            IOException, ParserConfigurationException, SAXException, InterruptedException, URISyntaxException {
+        CreateMeetingParameters createMeetingParms    = generateCreateMeetingParams();
+        CreateMeetingResponse   createMeetingResponse = bbbAPI.createMeeting(createMeetingParms);
+        assertEquals(createMeetingResponse.getReturnCode(), "SUCCESS");
+        assertEquals(createMeetingResponse.getMeetingId(), createMeetingParms.getMeetingId());
     }
 }
