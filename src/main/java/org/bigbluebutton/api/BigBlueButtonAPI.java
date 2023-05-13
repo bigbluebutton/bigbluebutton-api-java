@@ -41,6 +41,7 @@ import org.xml.sax.SAXException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -70,7 +71,9 @@ public class BigBlueButtonAPI {
         this.baseServerURL = baseUrl;
         this.securitySalt  = securitySalt;
         this.xmlMapper     = new XmlMapper();
-        this.urlBuilder    = new URLBuilder(baseUrl, securitySalt);
+        xmlMapper.registerModule(new JavaTimeModule());
+        xmlMapper.findAndRegisterModules();
+        this.urlBuilder = new URLBuilder(baseUrl, securitySalt);
     }
 
     public URI getApiVersionURL() throws URISyntaxException {

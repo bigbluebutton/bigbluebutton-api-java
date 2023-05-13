@@ -18,7 +18,13 @@
 
 package org.bigbluebutton.api.responses;
 
+import java.time.Instant;
+import java.time.ZonedDateTime;
+
+import org.bigbluebutton.api.deserializers.ZonedDateTimeDeserializer;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 import lombok.Getter;
@@ -35,10 +41,10 @@ public class CreateMeetingResponse extends BaseResponse {
 
     @Getter
     @JacksonXmlProperty(localName = "parentMeetingID")
-    private String parnetMeetingId;
+    private String parentMeetingId;
 
     @Getter
-    private String createTime;
+    private Instant createTime;
 
     @Getter
     private String voiceBridge;
@@ -47,14 +53,19 @@ public class CreateMeetingResponse extends BaseResponse {
     private String dialNumber;
 
     @Getter
-    private String createDate;
+    @JsonDeserialize(using = ZonedDateTimeDeserializer.class)
+    private ZonedDateTime createDate;
 
     @Getter
-    private String hasUserJoined;
+    private Boolean hasUserJoined;
 
     @Getter
-    private String duration;
+    private Integer duration;
 
     @Getter
-    private String hasBeenForciblyEnded;
+    private Boolean hasBeenForciblyEnded;
+
+    public Boolean hasParent() {
+        return getParentMeetingId().equals("bbb-none");
+    }
 }

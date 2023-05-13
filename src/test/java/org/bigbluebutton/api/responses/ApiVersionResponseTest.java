@@ -25,7 +25,6 @@ public class ApiVersionResponseTest extends ResponseTestCase {
     @Test
     @DisplayName("API version response content")
     void testApiVersionResponseContent() throws StreamReadException, DatabindException, IOException {
-        XmlMapper          xmlMapper          = new XmlMapper();
         ApiVersionResponse apiVersionResponse = xmlMapper.readValue(xmlInput, ApiVersionResponse.class);
         assertEquals(apiVersionResponse.getReturnCode(), APIReturnCode.SUCCESS.getReturnCode());
     }

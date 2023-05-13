@@ -27,7 +27,6 @@ public class EndMeetingResponseTest extends ResponseTestCase {
     @Test
     @DisplayName("API end meeting response content")
     void testEndMeetingResponseContent() throws StreamReadException, DatabindException, IOException {
-        XmlMapper          xmlMapper          = new XmlMapper();
         EndMeetingResponse endMeetingResponse = xmlMapper.readValue(xmlInput, EndMeetingResponse.class);
         assertEquals(endMeetingResponse.getReturnCode(), APIReturnCode.SUCCESS.getReturnCode());
         assertTrue(endMeetingResponse.success());

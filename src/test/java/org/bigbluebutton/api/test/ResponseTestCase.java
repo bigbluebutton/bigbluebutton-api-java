@@ -27,11 +27,16 @@ import java.nio.file.Paths;
 
 import org.junit.jupiter.api.BeforeEach;
 
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 public abstract class ResponseTestCase extends BaseTestCase {
 
     protected String xmlResponseFile;
 
     protected byte[] xmlInput;
+
+    protected XmlMapper xmlMapper;
 
     @BeforeEach
     public void setUp() {
@@ -43,6 +48,10 @@ public abstract class ResponseTestCase extends BaseTestCase {
             // TODO Auto-generated catch block
             fail("Failed loading fixutre: " + xmlResponseFile);
         }
+
+        xmlMapper = new XmlMapper();
+        xmlMapper.registerModule(new JavaTimeModule());
+        xmlMapper.findAndRegisterModules();
     }
 
 }

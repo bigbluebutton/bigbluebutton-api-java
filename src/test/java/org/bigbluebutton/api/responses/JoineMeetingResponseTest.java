@@ -26,7 +26,6 @@ public class JoineMeetingResponseTest extends ResponseTestCase {
     @Test
     @DisplayName("Join meeting response content")
     void testJoinMeetingResponseContent() throws StreamReadException, DatabindException, IOException {
-        XmlMapper           xmlMapper          = new XmlMapper();
         JoinMeetingResponse joinmeeingResponse = xmlMapper.readValue(xmlInput, JoinMeetingResponse.class);
         assertEquals(joinmeeingResponse.getReturnCode(), APIReturnCode.SUCCESS.getReturnCode());
         assertEquals(joinmeeingResponse.getMeetingId(), "bec8af173fae4d1f45d8ed6ea7c0b1ffb93af020-1464618265614");

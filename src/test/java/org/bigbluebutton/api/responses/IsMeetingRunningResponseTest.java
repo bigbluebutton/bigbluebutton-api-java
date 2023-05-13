@@ -41,9 +41,8 @@ class IsMeetingRunningResponseTest extends ResponseTestCase {
     }
 
     @Test
-    @DisplayName("API version response content")
+    @DisplayName("Meeting running api response content")
     void testIsMeetingRunningResponseContent() throws StreamReadException, DatabindException, IOException {
-        XmlMapper                xmlMapper                = new XmlMapper();
         IsMeetingRunningResponse isMeetingRunningResponse = xmlMapper.readValue(xmlInput,
                 IsMeetingRunningResponse.class);
         assertEquals(isMeetingRunningResponse.getReturnCode(), APIReturnCode.SUCCESS.getReturnCode());
