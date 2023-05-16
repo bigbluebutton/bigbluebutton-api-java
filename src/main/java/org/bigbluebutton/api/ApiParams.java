@@ -51,6 +51,10 @@ public class ApiParams {
     public static final String PARENT_MEETING_ID                             = "parentMeetingID";
     public static final String RECORD                                        = "record";
     public static final String RECORD_ID                                     = "recordID";
+    public static final String KIND                                          = "kind";
+    public static final String LANG                                          = "lang";
+    public static final String LABEL                                         = "label";
+    public static final String STATE                                         = "state";
     public static final String PUBLISH                                       = "publish";
     public static final String OFFSET                                        = "offset";
     public static final String LIMIT                                         = "limit";

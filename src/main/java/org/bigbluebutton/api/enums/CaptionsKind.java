@@ -16,32 +16,17 @@
  * with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.bigbluebutton.api.parameters;
-
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.hc.core5.http.NameValuePair;
-import org.bigbluebutton.api.ApiParams;
+package org.bigbluebutton.api.enums;
 
 import lombok.Getter;
-import lombok.experimental.Accessors;
 
-@Accessors(chain = true)
-public class GetRecordingTextTracksParameters extends MetaParameters {
+public enum CaptionsKind {
+    SUBTITLES("subtitles"), CAPTIONS("captions");
 
     @Getter
-    protected String recordId;
+    private String name;
 
-    public GetRecordingTextTracksParameters(String recordId) {
-        this.recordId = recordId;
-    }
-
-    public List<NameValuePair> getQueryParms() throws UnsupportedEncodingException {
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        addStringValue(params, ApiParams.RECORD_ID, getRecordId());
-        this.buildHTTPMeta(params);
-        return params;
+    CaptionsKind(String name) {
+        this.name = name;
     }
 }

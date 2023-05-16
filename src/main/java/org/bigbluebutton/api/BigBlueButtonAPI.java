@@ -118,6 +118,8 @@ public class BigBlueButtonAPI {
         return sendApiRequest(getEndMeetingURL(endMeetingParams), EndMeetingResponse.class);
     }
 
+    // Common methods
+
     public <T> T sendApiRequest(URI uri, Class<T> responseType)
             throws JsonMappingException, JsonProcessingException, MalformedURLException, IOException,
             ParserConfigurationException, SAXException, InterruptedException, URISyntaxException {

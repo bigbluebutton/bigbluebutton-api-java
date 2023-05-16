@@ -32,15 +32,29 @@ import lombok.experimental.Accessors;
 public class PublishRecordingsParameters extends BaseParameters {
 
     @Getter
-    protected String recordId;
+    List<String> recordIds = new ArrayList<>();
 
-    public PublishRecordingsParameters(String meetingId, Boolean publish) {
-        this.recordId = meetingId;
+    @Getter
+    protected Boolean publish;
+
+    public void addRecordId(String recordId) {
+        recordIds.add(recordId);
+    }
+
+    public PublishRecordingsParameters(List<String> recordIds, Boolean publish) {
+        this.recordIds = recordIds;
+        this.publish   = publish;
+    }
+
+    public PublishRecordingsParameters(String recordId, Boolean publish) {
+        this.recordIds.add(recordId);
+        this.publish = publish;
     }
 
     public List<NameValuePair> getQueryParms() throws UnsupportedEncodingException {
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        addStringValue(params, ApiParams.RECORD_ID, getRecordId());
+        addStringValue(params, ApiParams.RECORD_ID, String.join(",", recordIds));
+        addBooleanValue(params, ApiParams.PUBLISH, getPublish());
         return params;
     }
 }

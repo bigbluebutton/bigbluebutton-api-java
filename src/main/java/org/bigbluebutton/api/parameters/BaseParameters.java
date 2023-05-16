@@ -31,7 +31,7 @@ public abstract class BaseParameters {
 
     protected void addStringValue(List<NameValuePair> params, String name, String value)
             throws UnsupportedEncodingException {
-        if (value != null) {
+        if (value != null && !value.isEmpty()) {
             params.add(new BasicNameValuePair(name, this.urlEncode(value)));
         }
     }

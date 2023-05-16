@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.apache.hc.core5.http.NameValuePair;
 import org.bigbluebutton.api.ApiParams;
+import org.bigbluebutton.api.enums.CaptionsKind;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -35,18 +36,27 @@ public class PutRecordingTextTrackParameters extends BaseParameters {
     protected String recordId;
 
     @Getter
-    protected Boolean publish;
-    // @todo handle multiple recordings
+    protected CaptionsKind kind;
 
-    public PutRecordingTextTrackParameters(String meetingId, Boolean publish) {
+    @Getter
+    protected String lang;
+
+    @Getter
+    protected String label;
+
+    public PutRecordingTextTrackParameters(String meetingId, CaptionsKind kind, String lang, String label) {
         this.recordId = meetingId;
-        this.publish  = publish;
+        this.kind     = kind;
+        this.lang     = lang;
+        this.label    = label;
     }
 
     public List<NameValuePair> getQueryParms() throws UnsupportedEncodingException {
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         addStringValue(params, ApiParams.RECORD_ID, getRecordId());
-        addBooleanValue(params, ApiParams.PUBLISH, getPublish());
+        addStringValue(params, ApiParams.KIND, getKind().getName());
+        addStringValue(params, ApiParams.LANG, getLang());
+        addStringValue(params, ApiParams.LABEL, getLabel());
         return params;
     }
 }

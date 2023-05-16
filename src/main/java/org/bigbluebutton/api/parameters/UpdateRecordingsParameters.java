@@ -32,15 +32,23 @@ import lombok.experimental.Accessors;
 public class UpdateRecordingsParameters extends MetaParameters {
 
     @Getter
-    protected String recordId;
+    List<String> recordIds = new ArrayList<>();
 
-    public UpdateRecordingsParameters(String meetingId, Boolean publish) {
-        this.recordId = meetingId;
+    public UpdateRecordingsParameters(List<String> recordIds) {
+        this.recordIds = recordIds;
+    }
+
+    public UpdateRecordingsParameters(String recordId) {
+        this.recordIds.add(recordId);
+    }
+
+    public void addRecordId(String recordId) {
+        recordIds.add(recordId);
     }
 
     public List<NameValuePair> getQueryParms() throws UnsupportedEncodingException {
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        addStringValue(params, ApiParams.RECORD_ID, getRecordId());
+        addStringValue(params, ApiParams.RECORD_ID, String.join(",", recordIds));
         this.buildHTTPMeta(params);
         return params;
     }

@@ -32,17 +32,23 @@ import lombok.experimental.Accessors;
 public class DeleteRecordingsParameters extends BaseParameters {
 
     @Getter
-    protected String recordId;
+    List<String> recordIds = new ArrayList<>();
 
-    // @todo handle multiple recordings
+    public DeleteRecordingsParameters(List<String> recordIds) {
+        this.recordIds = recordIds;
+    }
 
-    public DeleteRecordingsParameters(String meetingId) {
-        this.recordId = meetingId;
+    public DeleteRecordingsParameters(String recordId) {
+        this.recordIds.add(recordId);
+    }
+
+    public void addRecordId(String recordId) {
+        recordIds.add(recordId);
     }
 
     public List<NameValuePair> getQueryParms() throws UnsupportedEncodingException {
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        addStringValue(params, ApiParams.RECORD_ID, getRecordId());
+        addStringValue(params, ApiParams.RECORD_ID, String.join(",", recordIds));
         return params;
     }
 }

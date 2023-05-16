@@ -12,6 +12,28 @@
 	<name>BigBlueButton Java API</name>
 	<url>https://bigbluebutton.org</url>
 
+	<developers>
+		<developer>
+			<id>GhaziTriki</id>
+			<name>Ghazi Triki</name>
+			<email>ghazi.triki@riadvice.tn</email>
+			<organization>RIADVICE</organization>
+			<organizationUrl>htttps://riadvice.tn</organizationUrl>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+			<timezone>Africa/Tunis</timezone>
+		</developer>
+	</developers>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+
 	<properties>
 		<java.version>11</java.version>
 		<jackson.version>2.15.0</jackson.version>

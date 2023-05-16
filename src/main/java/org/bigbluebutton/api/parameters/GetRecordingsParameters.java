@@ -21,6 +21,7 @@ package org.bigbluebutton.api.parameters;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.hc.core5.http.NameValuePair;
 import org.bigbluebutton.api.ApiParams;
@@ -33,17 +34,16 @@ import lombok.experimental.Accessors;
 public class GetRecordingsParameters extends MetaParameters {
 
     @Getter
-    protected String meetingId;
+    List<String> meetingIds = new ArrayList<>();
+
+    @Getter
+    List<String> recordIds = new ArrayList<>();
 
     @Getter
     protected String recordId;
 
-    // @todo handle multiple recordings
-
     @Getter
-    protected RecordingState state;
-
-    // @todo handle multiple states
+    protected List<RecordingState> states;
 
     @Getter
     protected Integer offset;
@@ -51,10 +51,24 @@ public class GetRecordingsParameters extends MetaParameters {
     @Getter
     protected Integer limit;
 
+    public void addMeetingId(String meetingId) {
+        meetingIds.add(meetingId);
+    }
+
+    public void addRecordId(String recordId) {
+        recordIds.add(recordId);
+    }
+
+    public void addState(RecordingState state) {
+        states.add(state);
+    }
+
     public List<NameValuePair> getQueryParms() throws UnsupportedEncodingException {
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        addStringValue(params, ApiParams.MEETING_ID, getMeetingId());
-        addStringValue(params, ApiParams.RECORD_ID, getRecordId());
+        addStringValue(params, ApiParams.MEETING_ID, String.join(",", meetingIds));
+        addStringValue(params, ApiParams.RECORD_ID, String.join(",", recordIds));
+        addStringValue(params, ApiParams.STATE,
+                String.join(",", states.stream().collect(Collectors.mapping(Enum::name, Collectors.joining(",")))));
         addIntegerValue(params, ApiParams.OFFSET, getOffset());
         addIntegerValue(params, ApiParams.LIMIT, getLimit());
         this.buildHTTPMeta(params);
