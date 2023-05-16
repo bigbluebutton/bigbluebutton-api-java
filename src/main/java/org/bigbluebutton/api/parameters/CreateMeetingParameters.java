@@ -33,7 +33,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 @Accessors(chain = true)
-public class CreateMeetingParameters extends BaseParameters {
+public class CreateMeetingParameters extends MetaParameters {
 
     @Getter
     protected String name;
@@ -289,6 +289,8 @@ public class CreateMeetingParameters extends BaseParameters {
         // disabledFeatures
         // groups
         // pre-uploaded documents
+
+        this.buildHTTPMeta(params);
         return params;
     }
 }

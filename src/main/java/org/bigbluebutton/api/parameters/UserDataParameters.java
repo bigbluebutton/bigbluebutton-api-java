@@ -18,26 +18,31 @@
 
 package org.bigbluebutton.api.parameters;
 
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.hc.core5.http.NameValuePair;
-import org.bigbluebutton.api.ApiParams;
+import org.apache.hc.core5.http.message.BasicNameValuePair;
+import org.bigbluebutton.api.ApiUserDataParams;
 
-import lombok.Getter;
-import lombok.experimental.Accessors;
+public abstract class UserDataParameters extends BaseParameters {
 
-@Accessors(chain = true)
-public class GetRecordingTextTracksParameters extends MetaParameters {
+    protected HashMap<String, String> userData;
 
-    @Getter
-    protected String recordId;
+    public UserDataParameters() {
+        userData = new HashMap<>();
+    }
 
-    public List<NameValuePair> getQueryParms() throws UnsupportedEncodingException {
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        addStringValue(params, ApiParams.RECORD_ID, getRecordId());
-        this.buildHTTPMeta(params);
-        return params;
+    public String getMeta(String name) {
+        return userData.get(name);
+    }
+
+    public void addMeta(String key, String value) {
+        userData.put(key, value);
+    }
+
+    protected void buildHTTPUserData(List<NameValuePair> params) {
+        userData.forEach(
+                (key, value) -> params.add(new BasicNameValuePair(ApiUserDataParams.USERDATA_PREFIX + key, value)));
     }
 }

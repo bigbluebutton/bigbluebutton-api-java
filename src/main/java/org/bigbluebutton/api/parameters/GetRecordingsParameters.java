@@ -30,7 +30,7 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 
 @Accessors(chain = true)
-public class GetRecordingsParameters extends BaseParameters {
+public class GetRecordingsParameters extends MetaParameters {
 
     @Getter
     protected String meetingId;
@@ -57,6 +57,7 @@ public class GetRecordingsParameters extends BaseParameters {
         addStringValue(params, ApiParams.RECORD_ID, getRecordId());
         addIntegerValue(params, ApiParams.OFFSET, getOffset());
         addIntegerValue(params, ApiParams.LIMIT, getLimit());
+        this.buildHTTPMeta(params);
         return params;
     }
 }

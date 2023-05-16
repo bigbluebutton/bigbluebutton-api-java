@@ -29,7 +29,7 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 
 @Accessors(chain = true)
-public class UpdateRecordingsParameters extends BaseParameters {
+public class UpdateRecordingsParameters extends MetaParameters {
 
     @Getter
     protected String recordId;
@@ -41,6 +41,7 @@ public class UpdateRecordingsParameters extends BaseParameters {
     public List<NameValuePair> getQueryParms() throws UnsupportedEncodingException {
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         addStringValue(params, ApiParams.RECORD_ID, getRecordId());
+        this.buildHTTPMeta(params);
         return params;
     }
 }

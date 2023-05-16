@@ -32,7 +32,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 @Accessors(chain = true)
-public class JoinMeetingParameters extends BaseParameters {
+public class JoinMeetingParameters extends UserDataParameters {
 
     @Getter
     protected String fullName;
@@ -94,7 +94,9 @@ public class JoinMeetingParameters extends BaseParameters {
         addStringValue(params, ApiParams.AVATAR_URL, getAvatarURL());
         addBooleanValue(params, ApiParams.REDIRECT, getRedirect());
         addBooleanValue(params, ApiParams.EXCLUDE_FROM_DASHBOARD, getExcludeFromDashboard());
-        // buildMeta
+
+        this.buildHTTPUserData(params);
+
         return params;
     }
 }
