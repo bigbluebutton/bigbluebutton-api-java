@@ -66,6 +66,10 @@ public class BigBlueButtonAPI {
     @Setter
     protected Integer timeout = 10;
 
+    @Getter
+    @Setter
+    protected String hashingAlgorithm = HashingAlgorithms.SHA_256;
+
     protected URLBuilder urlBuilder;
 
     /**
@@ -77,13 +81,18 @@ public class BigBlueButtonAPI {
         this(System.getenv("BBB_SERVER_BASE_URL"), System.getenv("BBB_SECURITY_SALT"));
     }
 
+    public BigBlueButtonAPI(String hashingAlgorithm) {
+        this();
+        this.hashingAlgorithm = hashingAlgorithm;
+    }
+
     public BigBlueButtonAPI(String baseUrl, String securitySalt) {
         this.baseServerURL = baseUrl;
         this.securitySalt  = securitySalt;
         this.xmlMapper     = new XmlMapper();
         xmlMapper.registerModule(new JavaTimeModule());
         xmlMapper.findAndRegisterModules();
-        this.urlBuilder = new URLBuilder(baseUrl, securitySalt);
+        this.urlBuilder = new URLBuilder(this.baseServerURL, this.securitySalt, this.hashingAlgorithm);
     }
 
     public URI getApiVersionURL() throws URISyntaxException {

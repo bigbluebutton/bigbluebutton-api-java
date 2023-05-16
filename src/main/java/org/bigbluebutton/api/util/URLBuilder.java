@@ -28,6 +28,7 @@ import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.net.URIBuilder;
 import org.apache.hc.core5.net.URLEncodedUtils;
 import org.bigbluebutton.api.ApiMethod;
+import org.bigbluebutton.api.HashingAlgorithms;
 
 import lombok.Getter;
 
@@ -41,13 +42,17 @@ public class URLBuilder {
     @Getter
     private String sharedSecret;
 
-    public URLBuilder(String uri, String sharedSecret) {
-        this(URI.create(uri), sharedSecret);
+    @Getter
+    private String hashingAlgorithm;
+
+    public URLBuilder(String uri, String sharedSecret, String hashingAlgorithm) {
+        this(URI.create(uri), sharedSecret, hashingAlgorithm);
     }
 
-    public URLBuilder(URI uri, String sharedSecret) {
-        this.baseUri      = uri;
-        this.sharedSecret = sharedSecret;
+    public URLBuilder(URI uri, String sharedSecret, String hashingAlgorithm) {
+        this.baseUri          = uri;
+        this.sharedSecret     = sharedSecret;
+        this.hashingAlgorithm = hashingAlgorithm;
     }
 
     public URI buildUrl(ApiMethod apiMethod) throws URISyntaxException {
@@ -61,7 +66,21 @@ public class URLBuilder {
     }
 
     private String calculateChecksum(ApiMethod apiMethod, List<NameValuePair> queryParams) {
-        return DigestUtils.sha1Hex(
-                apiMethod.getName() + URLEncodedUtils.format(queryParams, StandardCharsets.UTF_8) + this.sharedSecret);
+        switch (hashingAlgorithm) {
+            case HashingAlgorithms.SHA_1:
+                return DigestUtils.sha1Hex(apiMethod.getName()
+                        + URLEncodedUtils.format(queryParams, StandardCharsets.UTF_8) + this.sharedSecret);
+            case HashingAlgorithms.SHA_256:
+                return DigestUtils.sha256Hex(apiMethod.getName()
+                        + URLEncodedUtils.format(queryParams, StandardCharsets.UTF_8) + this.sharedSecret);
+            case HashingAlgorithms.SHA_512:
+                return DigestUtils.sha512Hex(apiMethod.getName()
+                        + URLEncodedUtils.format(queryParams, StandardCharsets.UTF_8) + this.sharedSecret);
+            case HashingAlgorithms.SHA_384:
+                return DigestUtils.sha384Hex(apiMethod.getName()
+                        + URLEncodedUtils.format(queryParams, StandardCharsets.UTF_8) + this.sharedSecret);
+            default:
+                throw new IllegalArgumentException("Unsupported hashing algorithm: " + hashingAlgorithm);
+        }
     }
 }
