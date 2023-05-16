@@ -18,9 +18,16 @@
 
 package org.bigbluebutton.api.parameters;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 import org.apache.hc.core5.http.NameValuePair;
 import org.bigbluebutton.api.ApiParams;
@@ -29,7 +36,9 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 
 @Accessors(chain = true)
-public class InsertDocumentParameters extends BaseParameters {
+public class InsertDocumentParameters extends BaseParameters implements Documentable {
+
+    private DocumentableTrait documentableTrait = new DocumentableTrait();
 
     @Getter
     protected String meetingId;
@@ -42,5 +51,25 @@ public class InsertDocumentParameters extends BaseParameters {
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         addStringValue(params, ApiParams.MEETING_ID, getMeetingId());
         return params;
+    }
+
+    @Override
+    public Map<String, String> getPresentations() {
+        return documentableTrait.getPresentations();
+    }
+
+    @Override
+    public void addPresentation(String name, URI url) {
+        documentableTrait.addPresentation(name, url);
+    }
+
+    @Override
+    public void addPresentation(String name, File file) throws IOException {
+        documentableTrait.addPresentation(name, file);
+    }
+
+    @Override
+    public String getPresentationsAsXML() throws ParserConfigurationException, TransformerException {
+        return documentableTrait.getPresentationsAsXML();
     }
 }
