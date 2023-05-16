@@ -25,6 +25,7 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 import org.bigbluebutton.api.parameters.CreateMeetingParameters;
 import org.bigbluebutton.api.parameters.EndMeetingParameters;
@@ -64,8 +65,9 @@ public class BigBlueButtonAPITest extends BigBlueButtonTestCase {
 
     @Test
     @DisplayName("BigBlueButton Create meeting")
-    public void shouldCreateMeeting() throws JsonMappingException, JsonProcessingException, MalformedURLException,
-            IOException, ParserConfigurationException, SAXException, InterruptedException, URISyntaxException {
+    public void shouldCreateMeeting()
+            throws JsonMappingException, JsonProcessingException, MalformedURLException, IOException,
+            ParserConfigurationException, SAXException, InterruptedException, URISyntaxException, TransformerException {
         CreateMeetingParameters createMeetingParms    = generateCreateMeetingParams();
         CreateMeetingResponse   createMeetingResponse = bbbAPI.createMeeting(createMeetingParms);
         assertEquals(createMeetingResponse.getReturnCode(), APIReturnCode.SUCCESS.getReturnCode());

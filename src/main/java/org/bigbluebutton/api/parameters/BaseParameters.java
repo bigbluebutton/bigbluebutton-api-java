@@ -21,6 +21,7 @@ package org.bigbluebutton.api.parameters;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.apache.hc.core5.http.NameValuePair;
@@ -55,6 +56,6 @@ public abstract class BaseParameters {
     }
 
     protected String urlEncode(String value) throws UnsupportedEncodingException {
-        return URLEncoder.encode(value, "UTF-8");
+        return URLEncoder.encode(value, StandardCharsets.UTF_8);
     }
 }

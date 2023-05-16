@@ -32,5 +32,6 @@ public class GuestPolicyTest extends BaseTestCase {
         assertEquals(GuestPolicy.ALWAYS_ACCEPT.getName(), "ALWAYS_ACCEPT");
         assertEquals(GuestPolicy.ALWAYS_DENY.getName(), "ALWAYS_DENY");
         assertEquals(GuestPolicy.ASK_MODERATOR.getName(), "ASK_MODERATOR");
+        assertEquals(GuestPolicy.ALWAYS_ACCEPT_AUTH.getName(), "ALWAYS_ACCEPT_AUTH");
     }
 }

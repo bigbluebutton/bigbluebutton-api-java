@@ -20,6 +20,7 @@ package org.bigbluebutton.api.responses;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 
@@ -60,5 +61,6 @@ class CreateMeetingResponseTest extends ResponseTestCase {
         assertEquals(createResponse.getMessageKey(), "duplicateWarning");
         assertEquals(createResponse.getMessage(),
                 "This conference was already in existence and may currently be in progress.");
+        assertTrue(createResponse.hasParent());
     }
 }

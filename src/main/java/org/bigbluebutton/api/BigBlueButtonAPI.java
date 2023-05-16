@@ -23,12 +23,18 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.classic.methods.HttpUriRequestBase;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
+import org.apache.hc.core5.http.HttpHeaders;
+import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.bigbluebutton.api.handlers.ApiResponseHandler;
 import org.bigbluebutton.api.parameters.CreateMeetingParameters;
 import org.bigbluebutton.api.parameters.EndMeetingParameters;
@@ -55,6 +61,10 @@ public class BigBlueButtonAPI {
     @Getter
     @Setter
     protected String baseServerURL;
+
+    @Getter
+    @Setter
+    protected Integer timeout = 10;
 
     protected URLBuilder urlBuilder;
 
@@ -92,9 +102,9 @@ public class BigBlueButtonAPI {
 
     public CreateMeetingResponse createMeeting(CreateMeetingParameters createMeetingParams)
             throws JsonMappingException, JsonProcessingException, MalformedURLException, IOException,
-            ParserConfigurationException, SAXException, InterruptedException, URISyntaxException {
-        return sendApiRequest(getCreateMeetingURL(createMeetingParams), CreateMeetingResponse.class);
-
+            ParserConfigurationException, SAXException, InterruptedException, URISyntaxException, TransformerException {
+        return sendApiRequest(getCreateMeetingURL(createMeetingParams), createMeetingParams.getPresentationsAsXML(),
+                CreateMeetingResponse.class);
     }
 
     public URI getEndMeetingURL(EndMeetingParameters endMeetingParams)
@@ -111,20 +121,45 @@ public class BigBlueButtonAPI {
     public <T> T sendApiRequest(URI uri, Class<T> responseType)
             throws JsonMappingException, JsonProcessingException, MalformedURLException, IOException,
             ParserConfigurationException, SAXException, InterruptedException, URISyntaxException {
-        return xmlMapper.readValue(this.sendRequest(uri), responseType);
+        return xmlMapper.readValue(this.sendRequest(uri, null), responseType);
+    }
+
+    public <T> T sendApiRequest(URI uri, String payload, Class<T> responseType)
+            throws JsonMappingException, JsonProcessingException, MalformedURLException, IOException,
+            ParserConfigurationException, SAXException, InterruptedException, URISyntaxException {
+        return xmlMapper.readValue(this.sendRequest(uri, payload), responseType);
     }
 
     protected String sendRequest(URI uri) throws MalformedURLException, IOException, ParserConfigurationException,
             SAXException, InterruptedException {
-        return this.sendRequest(uri, "", "application/xml");
+        return this.sendRequest(uri, null, "application/xml");
+    }
+
+    protected String sendRequest(URI uri, String payload) throws MalformedURLException, IOException,
+            ParserConfigurationException, SAXException, InterruptedException {
+        return this.sendRequest(uri, payload, "application/xml");
     }
 
     protected String sendRequest(URI uri, String payload, String contentType) throws MalformedURLException, IOException,
             ParserConfigurationException, SAXException, InterruptedException {
         // Open a connection to the API endpoint
-        HttpClient         httpClient         = HttpClientBuilder.create().build();
-        HttpGet            httpGet            = new HttpGet(uri);
+        HttpClient         httpClient = HttpClientBuilder.create().build();
+        HttpUriRequestBase httpRequest;
+        if (payload == null) {
+            httpRequest = new HttpGet(uri);
+        } else {
+            httpRequest = new HttpPost(uri);
+            // Set the payload as the request entity
+            StringEntity requestEntity = new StringEntity(payload);
+            httpRequest.setEntity(requestEntity);
+            httpRequest.setHeader(HttpHeaders.CONTENT_TYPE, contentType);
+            httpRequest.setHeader(HttpHeaders.CONTENT_LENGTH, String.valueOf(payload.length()));
+        }
+
+        httpRequest.setHeader(HttpHeaders.CONTENT_ENCODING, StandardCharsets.UTF_8);
+        httpRequest.setHeader(HttpHeaders.TIMEOUT, this.timeout);
+
         ApiResponseHandler apiResponseHandler = new ApiResponseHandler();
-        return httpClient.execute(httpGet, apiResponseHandler);
+        return httpClient.execute(httpRequest, apiResponseHandler);
     }
 }
