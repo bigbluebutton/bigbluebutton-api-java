@@ -18,28 +18,10 @@
 
 package org.bigbluebutton.api.responses;
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
 import lombok.Getter;
 
-@JacksonXmlRootElement(localName = "response")
-public abstract class BaseResponse {
-    @Getter
-    @JacksonXmlProperty(localName = "returncode")
-    protected String returnCode;
+public class DeleteRecordingsResponse extends BaseResponse {
 
     @Getter
-    protected String message;
-
-    @Getter
-    protected String messageKey;
-
-    public Boolean success() {
-        return returnCode.equals(APIReturnCode.SUCCESS.getReturnCode());
-    }
-
-    public Boolean failed() {
-        return returnCode.equals(APIReturnCode.FAILED.getReturnCode());
-    }
+    protected Boolean deleted;
 }

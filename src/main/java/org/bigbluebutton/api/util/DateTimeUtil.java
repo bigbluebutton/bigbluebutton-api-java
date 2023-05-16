@@ -18,6 +18,9 @@
 
 package org.bigbluebutton.api.util;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 public final class DateTimeUtil {
@@ -25,5 +28,11 @@ public final class DateTimeUtil {
 
     private DateTimeUtil() {
         throw new IllegalStateException("DateTimeUtil is a utility class. Instanciation is forbidden.");
+    }
+
+    public static ZonedDateTime parseBigBlueButtonDate(String dateString) {
+        LocalDateTime localDateTime = LocalDateTime.parse(dateString, TZ_DATE_FORMATTER);
+        String[]      parts         = dateString.split(" ");
+        return ZonedDateTime.of(localDateTime, ZoneId.of(parts[parts.length - 2]));
     }
 }

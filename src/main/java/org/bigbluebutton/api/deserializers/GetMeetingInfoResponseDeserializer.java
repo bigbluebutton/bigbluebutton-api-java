@@ -19,20 +19,31 @@
 package org.bigbluebutton.api.deserializers;
 
 import java.io.IOException;
-import java.time.ZonedDateTime;
 
-import org.bigbluebutton.api.util.DateTimeUtil;
+import org.bigbluebutton.api.responses.GetMeetingInfoResponse;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
-public class ZonedDateTimeDeserializer extends JsonDeserializer<ZonedDateTime> {
+public class GetMeetingInfoResponseDeserializer extends StdDeserializer<GetMeetingInfoResponse> {
+
+    private static final long serialVersionUID = 5655122233138225747L;
+
+    public GetMeetingInfoResponseDeserializer() {
+        this(null);
+    }
+
+    public GetMeetingInfoResponseDeserializer(Class<?> vc) {
+        super(vc);
+    }
 
     @Override
-    public ZonedDateTime deserialize(JsonParser jp, DeserializationContext ctxt)
+    public GetMeetingInfoResponse deserialize(JsonParser parser, DeserializationContext ctxt)
             throws IOException, JsonProcessingException {
-        return DateTimeUtil.parseBigBlueButtonDate(jp.getText());
+        GetMeetingInfoResponse response = new GetMeetingInfoResponse(parser);
+
+        return response;
     }
 }

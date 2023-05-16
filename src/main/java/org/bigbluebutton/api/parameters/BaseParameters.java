@@ -19,6 +19,7 @@
 package org.bigbluebutton.api.parameters;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URLEncoder;
 import java.util.List;
 
@@ -42,6 +43,12 @@ public abstract class BaseParameters {
     }
 
     protected void addBooleanValue(List<NameValuePair> params, String name, Boolean value) {
+        if (value != null) {
+            params.add(new BasicNameValuePair(name, value.toString()));
+        }
+    }
+
+    protected void addUriValue(List<NameValuePair> params, String name, URI value) {
         if (value != null) {
             params.add(new BasicNameValuePair(name, value.toString()));
         }

@@ -16,30 +16,31 @@
  * with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.bigbluebutton.api.responses;
+package org.bigbluebutton.api.parameters;
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.hc.core5.http.NameValuePair;
+import org.bigbluebutton.api.ApiParams;
 
 import lombok.Getter;
+import lombok.experimental.Accessors;
 
-@JacksonXmlRootElement(localName = "response")
-public abstract class BaseResponse {
-    @Getter
-    @JacksonXmlProperty(localName = "returncode")
-    protected String returnCode;
+@Accessors(chain = true)
+public class PublishRecordingsParameters extends BaseParameters {
 
     @Getter
-    protected String message;
+    protected String recordId;
 
-    @Getter
-    protected String messageKey;
-
-    public Boolean success() {
-        return returnCode.equals(APIReturnCode.SUCCESS.getReturnCode());
+    public PublishRecordingsParameters(String meetingId, Boolean publish) {
+        this.recordId = meetingId;
     }
 
-    public Boolean failed() {
-        return returnCode.equals(APIReturnCode.FAILED.getReturnCode());
+    public List<NameValuePair> getQueryParms() throws UnsupportedEncodingException {
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        addStringValue(params, ApiParams.RECORD_ID, getRecordId());
+        return params;
     }
 }

@@ -51,6 +51,9 @@ public class ApiParams {
     public static final String PARENT_MEETING_ID                             = "parentMeetingID";
     public static final String RECORD                                        = "record";
     public static final String RECORD_ID                                     = "recordID";
+    public static final String PUBLISH                                       = "publish";
+    public static final String OFFSET                                        = "offset";
+    public static final String LIMIT                                         = "limit";
     public static final String REDIRECT                                      = "redirect";
     public static final String GUEST                                         = "guest";
     public static final String EXCLUDE_FROM_DASHBOARD                        = "excludeFromDashboard";
@@ -108,6 +111,11 @@ public class ApiParams {
     // students from running amok.
     public static final String END_WHEN_NO_MODERATOR                  = "endWhenNoModerator";
     public static final String END_WHEN_NO_MODERATOR_DELAY_IN_MINUTES = "endWhenNoModeratorDelayInMinutes";
+
+    // Webhooks parameters
+    public static final String CALLBACK_URL = "callbackURL";
+    public static final String GET_RAW      = "getRaw";
+    public static final String HOOK_ID      = "hookID";
 
     private ApiParams() {
         throw new IllegalStateException("ApiParams is a utility class. Instanciation is forbidden.");

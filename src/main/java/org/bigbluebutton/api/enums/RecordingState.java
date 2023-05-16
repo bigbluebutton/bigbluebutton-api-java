@@ -16,30 +16,19 @@
  * with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.bigbluebutton.api.responses;
-
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+package org.bigbluebutton.api.enums;
 
 import lombok.Getter;
 
-@JacksonXmlRootElement(localName = "response")
-public abstract class BaseResponse {
-    @Getter
-    @JacksonXmlProperty(localName = "returncode")
-    protected String returnCode;
+public enum RecordingState {
+
+    ANY("any"), PROCESSING("processing"), PROCESSED("processed"), PUBLISHED("published"), UNPUBLISHED("unpublished"),
+    DELETED("deleted");
 
     @Getter
-    protected String message;
+    private String name;
 
-    @Getter
-    protected String messageKey;
-
-    public Boolean success() {
-        return returnCode.equals(APIReturnCode.SUCCESS.getReturnCode());
-    }
-
-    public Boolean failed() {
-        return returnCode.equals(APIReturnCode.FAILED.getReturnCode());
+    RecordingState(String name) {
+        this.name = name;
     }
 }

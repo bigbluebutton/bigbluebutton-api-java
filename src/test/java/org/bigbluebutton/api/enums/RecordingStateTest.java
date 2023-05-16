@@ -16,30 +16,24 @@
  * with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.bigbluebutton.api.responses;
+package org.bigbluebutton.api.enums;
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import lombok.Getter;
+import org.bigbluebutton.api.test.BaseTestCase;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-@JacksonXmlRootElement(localName = "response")
-public abstract class BaseResponse {
-    @Getter
-    @JacksonXmlProperty(localName = "returncode")
-    protected String returnCode;
+public class RecordingStateTest extends BaseTestCase {
 
-    @Getter
-    protected String message;
-
-    @Getter
-    protected String messageKey;
-
-    public Boolean success() {
-        return returnCode.equals(APIReturnCode.SUCCESS.getReturnCode());
-    }
-
-    public Boolean failed() {
-        return returnCode.equals(APIReturnCode.FAILED.getReturnCode());
+    @Test
+    @DisplayName("Test recording states")
+    void featureNamesShouldMatch() {
+        assertEquals(RecordingState.ANY.getName(), "any");
+        assertEquals(RecordingState.DELETED.getName(), "deleted");
+        assertEquals(RecordingState.PROCESSED.getName(), "processed");
+        assertEquals(RecordingState.PROCESSING.getName(), "processing");
+        assertEquals(RecordingState.PUBLISHED.getName(), "published");
+        assertEquals(RecordingState.UNPUBLISHED.getName(), "unpublished");
     }
 }

@@ -18,11 +18,38 @@
 
 package org.bigbluebutton.api.responses;
 
+import java.io.IOException;
+
 import org.bigbluebutton.api.data.Meeting;
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.ObjectCodec;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
+import lombok.Getter;
+
+@JacksonXmlRootElement(localName = "response")
 public class GetMeetingInfoResponse extends BaseResponse {
-    @JacksonXmlProperty(localName = "response")
+    @Getter
     private Meeting meeting;
+
+    public GetMeetingInfoResponse(JsonParser parser) throws IOException {
+        ObjectCodec codec = parser.getCodec();
+        JsonNode    node  = codec.readTree(parser);
+
+        JsonNode returnCodeNode = node.get("returncode");
+        if (returnCodeNode != null) {
+            this.returnCode = returnCodeNode.asText();
+        }
+
+        JsonNode messageNode = node.get("message");
+        if (messageNode != null) {
+            this.message = messageNode.asText();
+        }
+
+        // Create the Meeting object and set it in the response
+        Meeting meeting = new Meeting(node);
+        this.meeting = meeting;
+    }
 }

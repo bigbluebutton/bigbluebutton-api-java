@@ -19,6 +19,7 @@
 package org.bigbluebutton.api.parameters;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +58,7 @@ public class CreateMeetingParameters extends BaseParameters {
     protected Integer maxParticipants;
 
     @Getter
-    protected String logoutURL;
+    protected URI logoutURL;
 
     @Getter
     @Setter
@@ -232,7 +233,7 @@ public class CreateMeetingParameters extends BaseParameters {
         addStringValue(params, ApiParams.DIAL_NUMBER, getDialNumber());
         addStringValue(params, ApiParams.VOICE_BRIDGE, getVoiceBridge());
         addIntegerValue(params, ApiParams.MAX_PARTICIPANTS, getMaxParticipants());
-        addStringValue(params, ApiParams.LOGOUT_URL, getLogoutURL());
+        addUriValue(params, ApiParams.LOGOUT_URL, getLogoutURL());
         addBooleanValue(params, ApiParams.RECORD, getRecord());
         addIntegerValue(params, ApiParams.DURATION, getDuration());
         addBooleanValue(params, ApiParams.IS_BREAKOUT, getIsBreakout());
