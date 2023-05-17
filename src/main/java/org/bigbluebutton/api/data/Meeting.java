@@ -18,16 +18,19 @@
 
 package org.bigbluebutton.api.data;
 
-import java.io.IOException;
 import java.time.Instant;
 import java.time.ZonedDateTime;
+import java.util.List;
 
+import org.bigbluebutton.api.deserializers.MetadataDeserializer;
+import org.bigbluebutton.api.deserializers.ZonedDateTimeDeserializer;
 import org.bigbluebutton.api.responses.BaseResponse;
-import org.bigbluebutton.api.responses.GetMeetingInfoResponse;
 import org.bigbluebutton.api.util.DateTimeUtil;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 import lombok.Getter;
@@ -39,120 +42,9 @@ public class Meeting extends BaseResponse {
     @Setter
     private String meetingName;
 
-    @Getter
-    private GetMeetingInfoResponse response;
-
-    public Meeting(JsonNode node) throws IOException {
-        JsonNode meetingIdNode = node.get("meetingID");
-        if (meetingIdNode != null) {
-            this.meetingId = meetingIdNode.asText();
-        }
-
-        JsonNode meetingNameNode = node.get("meetingName");
-        if (meetingNameNode != null) {
-            this.meetingName = meetingNameNode.asText();
-        }
-
-        JsonNode createTimeNode = node.get("createTime");
-        if (createTimeNode != null) {
-            this.createTime = Instant.ofEpochSecond(createTimeNode.asLong());
-        }
-
-        JsonNode createDateNode = node.get("createDate");
-        if (createDateNode != null) {
-            this.createDate = DateTimeUtil.parseBigBlueButtonDate(createDateNode.asText());
-        }
-
-        JsonNode voiceBridgeNode = node.get("voiceBridge");
-        if (voiceBridgeNode != null) {
-            this.voiceBridge = voiceBridgeNode.asText();
-        }
-
-        JsonNode dialNumberNode = node.get("dialNumber");
-        if (dialNumberNode != null) {
-            this.dialNumber = dialNumberNode.asText();
-        }
-
-        JsonNode runningNode = node.get("running");
-        if (runningNode != null) {
-            this.running = runningNode.asBoolean();
-        }
-
-        JsonNode durationNode = node.get("duration");
-        if (durationNode != null) {
-            this.duration = durationNode.asInt();
-        }
-
-        JsonNode hasUserJoinedNode = node.get("hasUserJoined");
-        if (hasUserJoinedNode != null) {
-            this.hasUserJoined = hasUserJoinedNode.asBoolean();
-        }
-
-        JsonNode recordingNode = node.get("recording");
-        if (recordingNode != null) {
-            this.recording = recordingNode.asBoolean();
-        }
-
-        JsonNode hasBeenForciblyEndedNode = node.get("hasBeenForciblyEnded");
-        if (hasBeenForciblyEndedNode != null) {
-            this.hasBeenForciblyEnded = hasBeenForciblyEndedNode.asBoolean();
-        }
-
-        JsonNode startTimeNode = node.get("startTime");
-        if (startTimeNode != null) {
-            this.startTime = Instant.ofEpochSecond(startTimeNode.asLong());
-        }
-
-        JsonNode endTimeNode = node.get("endTime");
-        if (endTimeNode != null) {
-            this.endTime = Instant.ofEpochSecond(endTimeNode.asLong());
-        }
-
-        JsonNode participantCountNode = node.get("participantCount");
-        if (participantCountNode != null) {
-            this.participantCount = participantCountNode.asInt();
-        }
-
-        JsonNode listenerCountNode = node.get("listenerCount");
-        if (listenerCountNode != null) {
-            this.listenerCount = listenerCountNode.asInt();
-        }
-
-        JsonNode voiceParticipantCountNode = node.get("voiceParticipantCount");
-        if (voiceParticipantCountNode != null) {
-            this.voiceParticipantCount = voiceParticipantCountNode.asInt();
-        }
-
-        JsonNode videoCount = node.get("videoCount");
-        if (videoCount != null) {
-            this.videoCount = videoCount.asInt();
-        }
-
-        JsonNode moderatorCountNode = node.get("moderatorCount");
-        if (moderatorCountNode != null) {
-            this.moderatorCount = moderatorCountNode.asInt();
-        }
-
-        JsonNode isBreakoutNode = node.get("isBreakout");
-        if (isBreakoutNode != null) {
-            this.isBreakout = isBreakoutNode.asBoolean();
-        }
-
-        JsonNode maxUsersNode = node.get("maxUsers");
-        if (maxUsersNode != null) {
-            this.maxUsers = maxUsersNode.asInt();
-        }
-
-        JsonNode parentMeetingIDNode = node.get("parentMeetingID");
-        if (parentMeetingIDNode != null) {
-            this.parentMeetingId = parentMeetingIDNode.asText();
-        }
-
-        JsonNode sequenceNode = node.get("sequence");
-        if (sequenceNode != null) {
-            this.sequence = sequenceNode.asInt();
-        }
-    }
+    @JacksonXmlElementWrapper(localName = "attendees")
+    @JacksonXmlProperty(localName = "attendee")
+    private List<Attendee> attendees;
 
     @Getter
     @JacksonXmlProperty(localName = "meetingID")
@@ -166,6 +58,7 @@ public class Meeting extends BaseResponse {
     private Instant createTime;
 
     @Getter
+    @JsonDeserialize(using = ZonedDateTimeDeserializer.class)
     private ZonedDateTime createDate;
 
     @Getter
@@ -213,8 +106,8 @@ public class Meeting extends BaseResponse {
     @Getter
     private Integer moderatorCount;
 
-    // Attendees
-    // Metadata
+    @JsonDeserialize(using = MetadataDeserializer.class)
+    private List<Metadata> metadata;
 
     @Getter
     private Boolean isBreakout;
@@ -225,4 +118,119 @@ public class Meeting extends BaseResponse {
 
     @Getter
     private Integer sequence;
+
+    public static Meeting fromGetMeetingInfoResponse(JsonNode node) {
+        Meeting  meeting       = new Meeting();
+        JsonNode meetingIdNode = node.get("meetingID");
+        if (meetingIdNode != null) {
+            meeting.meetingId = meetingIdNode.asText();
+        }
+
+        JsonNode meetingNameNode = node.get("meetingName");
+        if (meetingNameNode != null) {
+            meeting.meetingName = meetingNameNode.asText();
+        }
+
+        JsonNode createTimeNode = node.get("createTime");
+        if (createTimeNode != null) {
+            meeting.createTime = Instant.ofEpochSecond(createTimeNode.asLong());
+        }
+
+        JsonNode createDateNode = node.get("createDate");
+        if (createDateNode != null) {
+            meeting.createDate = DateTimeUtil.parseBigBlueButtonDate(createDateNode.asText());
+        }
+
+        JsonNode voiceBridgeNode = node.get("voiceBridge");
+        if (voiceBridgeNode != null) {
+            meeting.voiceBridge = voiceBridgeNode.asText();
+        }
+
+        JsonNode dialNumberNode = node.get("dialNumber");
+        if (dialNumberNode != null) {
+            meeting.dialNumber = dialNumberNode.asText();
+        }
+
+        JsonNode runningNode = node.get("running");
+        if (runningNode != null) {
+            meeting.running = runningNode.asBoolean();
+        }
+
+        JsonNode durationNode = node.get("duration");
+        if (durationNode != null) {
+            meeting.duration = durationNode.asInt();
+        }
+
+        JsonNode hasUserJoinedNode = node.get("hasUserJoined");
+        if (hasUserJoinedNode != null) {
+            meeting.hasUserJoined = hasUserJoinedNode.asBoolean();
+        }
+
+        JsonNode recordingNode = node.get("recording");
+        if (recordingNode != null) {
+            meeting.recording = recordingNode.asBoolean();
+        }
+
+        JsonNode hasBeenForciblyEndedNode = node.get("hasBeenForciblyEnded");
+        if (hasBeenForciblyEndedNode != null) {
+            meeting.hasBeenForciblyEnded = hasBeenForciblyEndedNode.asBoolean();
+        }
+
+        JsonNode startTimeNode = node.get("startTime");
+        if (startTimeNode != null) {
+            meeting.startTime = Instant.ofEpochSecond(startTimeNode.asLong());
+        }
+
+        JsonNode endTimeNode = node.get("endTime");
+        if (endTimeNode != null) {
+            meeting.endTime = Instant.ofEpochSecond(endTimeNode.asLong());
+        }
+
+        JsonNode participantCountNode = node.get("participantCount");
+        if (participantCountNode != null) {
+            meeting.participantCount = participantCountNode.asInt();
+        }
+
+        JsonNode listenerCountNode = node.get("listenerCount");
+        if (listenerCountNode != null) {
+            meeting.listenerCount = listenerCountNode.asInt();
+        }
+
+        JsonNode voiceParticipantCountNode = node.get("voiceParticipantCount");
+        if (voiceParticipantCountNode != null) {
+            meeting.voiceParticipantCount = voiceParticipantCountNode.asInt();
+        }
+
+        JsonNode videoCount = node.get("videoCount");
+        if (videoCount != null) {
+            meeting.videoCount = videoCount.asInt();
+        }
+
+        JsonNode moderatorCountNode = node.get("moderatorCount");
+        if (moderatorCountNode != null) {
+            meeting.moderatorCount = moderatorCountNode.asInt();
+        }
+
+        JsonNode isBreakoutNode = node.get("isBreakout");
+        if (isBreakoutNode != null) {
+            meeting.isBreakout = isBreakoutNode.asBoolean();
+        }
+
+        JsonNode maxUsersNode = node.get("maxUsers");
+        if (maxUsersNode != null) {
+            meeting.maxUsers = maxUsersNode.asInt();
+        }
+
+        JsonNode parentMeetingIDNode = node.get("parentMeetingID");
+        if (parentMeetingIDNode != null) {
+            meeting.parentMeetingId = parentMeetingIDNode.asText();
+        }
+
+        JsonNode sequenceNode = node.get("sequence");
+        if (sequenceNode != null) {
+            meeting.sequence = sequenceNode.asInt();
+        }
+
+        return meeting;
+    }
 }
