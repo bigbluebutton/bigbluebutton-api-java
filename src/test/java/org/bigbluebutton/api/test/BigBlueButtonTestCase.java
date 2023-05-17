@@ -18,10 +18,14 @@
 
 package org.bigbluebutton.api.test;
 
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import org.bigbluebutton.api.ApiParams;
+import org.bigbluebutton.api.enums.GuestPolicy;
+import org.bigbluebutton.api.enums.MeetingLayout;
 import org.bigbluebutton.api.parameters.CreateMeetingParameters;
 import org.bigbluebutton.api.parameters.EndMeetingParameters;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,17 +45,45 @@ public class BigBlueButtonTestCase extends BaseTestCase {
     protected CreateMeetingParameters generateCreateMeetingParams() {
         Map<String, Object>     mockCreate   = mockCreateMeetingParams();
         CreateMeetingParameters createParams = new CreateMeetingParameters((String) mockCreate.get(ApiParams.NAME),
-                (String) mockCreate.get(ApiParams.MEETING_ID)).setDuration(faker.number().numberBetween(0, 10))
-                .setRecord(faker.bool().bool());
+                (String) mockCreate.get(ApiParams.MEETING_ID)).setAllowModsToEjectCameras(faker.bool().bool())
+                .setAllowModsToUnmuteUsers(faker.bool().bool()).setAllowRequestsWithoutSession(faker.bool().bool())
+                .setAllowStartStopRecording(faker.bool().bool()).setAutoStartRecording(faker.bool().bool())
+                .setBannerColor(faker.color().hex()).setBannerText(faker.lorem().sentence())
+                .setBreakoutRoomsPrivateChatEnabled(faker.bool().bool()).setBreakoutRoomsRecord(faker.bool().bool())
+                .setDialNumber(faker.phoneNumber().phoneNumber()).setDuration(faker.number().numberBetween(0, 10))
+                .setEndWhenNoModerator(faker.bool().bool())
+                .setEndWhenNoModeratorDelayInMinutes(faker.number().numberBetween(2, 5))
+                .setFreeJoin(faker.bool().bool())
+                .setGuestPolicy(GuestPolicy.values()[new Random().nextInt(GuestPolicy.values().length)])
+                .setIsBreakout(faker.bool().bool())
+                .setLearningDashboardCleanupDelayInMinutes(faker.number().numberBetween(0, 120))
+                .setLockSettingsDisableCam(faker.bool().bool()).setLockSettingsDisableMic(faker.bool().bool())
+                .setLockSettingsDisableNote(faker.bool().bool()).setLockSettingsDisablePrivateChat(faker.bool().bool())
+                .setLockSettingsDisablePublicChat(faker.bool().bool())
+                .setLockSettingsHideViewersCursor(faker.bool().bool()).setLockSettingsLockOnJoin(faker.bool().bool())
+                .setLockSettingsLockOnJoinConfigurable(faker.bool().bool()).setLogo(URI.create(faker.internet().url()))
+                .setMaxParticipants(faker.number().numberBetween(0, 200))
+                .setMeetingCameraCap(faker.number().numberBetween(8, 20))
+                .setMeetingExpireIfNoUserJoinedInMinutes(faker.number().numberBetween(0, 10))
+                .setMeetingExpireWhenLastUserLeftInMinutes(faker.number().numberBetween(2, 8))
+                .setMeetingKeepEvents(faker.bool().bool())
+                .setMeetingLayout(MeetingLayout.values()[new Random().nextInt(MeetingLayout.values().length)])
+                .setModeratorOnlyMessage(faker.lorem().paragraph()).setMuteOnStart(faker.bool().bool())
+                .setNotifyRecordingIsOn(faker.bool().bool())
+                .setPresentationUploadExternalDescription(faker.lorem().sentence())
+                .setPresentationUploadExternalUrl(URI.create(faker.internet().url()))
+                .setPreUploadedPresentationOverrideDefault(faker.bool().bool()).setRecord(faker.bool().bool())
+                .setSequence(faker.number().numberBetween(1, 5)).setUserCameraCap(faker.number().numberBetween(3, 5))
+                .setVoiceBridge(faker.phoneNumber().extension()).setWebcamsOnlyForModeratorBoolean(faker.bool().bool())
+                .setWelcome(faker.lorem().paragraph())
+                .addMeta(faker.country().countryCode3(), faker.country().capital());
         return createParams;
-
     }
 
     protected EndMeetingParameters generateEndMeetingParams() {
         Map<String, Object>  mockEnd   = mockEndMeetingParams();
         EndMeetingParameters endParams = new EndMeetingParameters((String) mockEnd.get(ApiParams.MEETING_ID));
         return endParams;
-
     }
 
     protected Map<String, Object> mockCreateMeetingParams() {

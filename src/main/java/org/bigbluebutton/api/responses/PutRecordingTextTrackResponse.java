@@ -16,33 +16,8 @@
  * with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.bigbluebutton.api.parameters;
+package org.bigbluebutton.api.responses;
 
-import java.util.HashMap;
-import java.util.List;
+public class PutRecordingTextTrackResponse extends BaseResponse {
 
-import org.apache.hc.core5.http.NameValuePair;
-import org.apache.hc.core5.http.message.BasicNameValuePair;
-import org.bigbluebutton.api.ApiMetaParams;
-
-public abstract class MetaParameters extends BaseParameters {
-
-    protected HashMap<String, String> metas;
-
-    public MetaParameters() {
-        metas = new HashMap<>();
-    }
-
-    public String getMeta(String name) {
-        return metas.get(name);
-    }
-
-    public BaseParameters addMeta(String key, String value) {
-        metas.put(key, value);
-        return this;
-    }
-
-    protected void buildHTTPMeta(List<NameValuePair> params) {
-        metas.forEach((key, value) -> params.add(new BasicNameValuePair(ApiMetaParams.META_PREFIX + key, value)));
-    }
 }

@@ -210,7 +210,7 @@ public class CreateMeetingParameters extends MetaParameters implements Documenta
 
     @Getter
     @Setter
-    protected String logo;
+    protected URI logo;
 
     @Getter
     @Setter
@@ -222,7 +222,7 @@ public class CreateMeetingParameters extends MetaParameters implements Documenta
 
     @Getter
     @Setter
-    protected String presentationUploadExternalUrl;
+    protected URI presentationUploadExternalUrl;
 
     @Getter
     @Setter
@@ -231,6 +231,11 @@ public class CreateMeetingParameters extends MetaParameters implements Documenta
     public CreateMeetingParameters(String name, String meetingId) {
         this.name      = name;
         this.meetingId = meetingId;
+    }
+
+    public CreateMeetingParameters addMeta(String key, String value) {
+        metas.put(key, value);
+        return this;
     }
 
     public List<NameValuePair> getQueryParms() throws UnsupportedEncodingException {
@@ -286,14 +291,13 @@ public class CreateMeetingParameters extends MetaParameters implements Documenta
                 getMeetingExpireIfNoUserJoinedInMinutes());
         addIntegerValue(params, ApiParams.MEETING_EXPIRE_WHEN_LAST_USER_LEFT_IN_MINUTES,
                 getMeetingExpireWhenLastUserLeftInMinutes());
-        addStringValue(params, ApiParams.LOGO, getLogo());
+        addStringValue(params, ApiParams.LOGO, getLogo().toString());
         addBooleanValue(params, ApiParams.PRE_UPLOAD_PRESENTATION_OVERRIDE_DEFAULT,
                 getPreUploadedPresentationOverrideDefault());
         addBooleanValue(params, ApiParams.NOTIFY_RECORDING_IS_ON, getNotifyRecordingIsOn());
-        addStringValue(params, ApiParams.PRESENTATION_UPLOAD_EXTERNAL_URL, getPresentationUploadExternalUrl());
+        addUriValue(params, ApiParams.PRESENTATION_UPLOAD_EXTERNAL_URL, getPresentationUploadExternalUrl());
         addStringValue(params, ApiParams.PRESENTATION_UPLOAD_EXTERNAL_DESCRIPTION,
                 getPresentationUploadExternalDescription());
-        // buildMeta
         // disabledFeatures
         // groups
         // pre-uploaded documents

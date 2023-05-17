@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 public class EndMeetingResponseTest extends ResponseTestCase {
 
