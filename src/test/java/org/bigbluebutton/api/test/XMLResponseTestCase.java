@@ -30,7 +30,7 @@ import org.junit.jupiter.api.BeforeEach;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-public abstract class ResponseTestCase extends BaseTestCase {
+public abstract class XMLResponseTestCase extends BaseTestCase {
 
     protected String xmlResponseFile;
 

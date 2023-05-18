@@ -25,11 +25,9 @@ import org.bigbluebutton.api.data.Meeting;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import lombok.Getter;
 
-@JacksonXmlRootElement(localName = "response")
 public class GetMeetingInfoResponse extends BaseResponse {
     @Getter
     private Meeting meeting;

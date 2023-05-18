@@ -16,17 +16,25 @@
  * with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.bigbluebutton.api.responses;
+package org.bigbluebutton.api.data.json;
 
 import java.util.List;
 
-import org.bigbluebutton.api.data.Recording;
+import org.bigbluebutton.api.data.Track;
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
-public class GetRecordingsResponse extends BaseResponse {
-    @JacksonXmlElementWrapper(localName = "recordings")
-    @JacksonXmlProperty(localName = "recording")
-    private List<Recording> recordings;
+import lombok.Getter;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Response {
+    @Getter
+    @JacksonXmlProperty(localName = "returncode")
+    @JsonProperty("returncode")
+    protected String returnCode;
+
+    @JsonProperty("tracks")
+    private List<Track> tracks;
 }

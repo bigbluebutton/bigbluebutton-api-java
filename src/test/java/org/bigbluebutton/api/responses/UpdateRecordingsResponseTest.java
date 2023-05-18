@@ -19,6 +19,7 @@
 package org.bigbluebutton.api.responses;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 
@@ -30,21 +31,21 @@ import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 
-class IsMeetingRunningResponseTest extends XMLResponseTestCase {
+public class UpdateRecordingsResponseTest extends XMLResponseTestCase {
 
     @BeforeEach
     public void setUp() {
-        xmlResponseFile = "fixtures/is_meeting_running.xml";
+        xmlResponseFile = "fixtures/update_recordings.xml";
 
         super.setUp();
     }
 
     @Test
-    @DisplayName("Meeting running api response content")
-    void testIsMeetingRunningResponseContent() throws StreamReadException, DatabindException, IOException {
-        IsMeetingRunningResponse isMeetingRunningResponse = xmlMapper.readValue(xmlInput,
-                IsMeetingRunningResponse.class);
-        assertEquals(isMeetingRunningResponse.getReturnCode(), APIReturnCode.SUCCESS.getReturnCode());
-        assertEquals(isMeetingRunningResponse.getRunning(), true);
+    @DisplayName("API publish recording scontent")
+    void testEndDeleteRecordingsResponseContent() throws StreamReadException, DatabindException, IOException {
+        UpdateRecordingsResponse updateRecordingsResponse = xmlMapper.readValue(xmlInput,
+                UpdateRecordingsResponse.class);
+        assertEquals(updateRecordingsResponse.getReturnCode(), APIReturnCode.SUCCESS.getReturnCode());
+        assertTrue(updateRecordingsResponse.success());
     }
 }

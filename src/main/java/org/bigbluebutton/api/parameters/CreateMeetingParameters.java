@@ -39,7 +39,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 @Accessors(chain = true)
-public class CreateMeetingParameters extends MetaParameters implements Documentable {
+public class CreateMeetingParameters extends MetaParameters implements Documentable<CreateMeetingParameters> {
 
     private DocumentableTrait documentableTrait = new DocumentableTrait();
 
@@ -312,13 +312,15 @@ public class CreateMeetingParameters extends MetaParameters implements Documenta
     }
 
     @Override
-    public void addPresentation(String name, URI url) {
+    public CreateMeetingParameters addPresentation(String name, URI url) {
         documentableTrait.addPresentation(name, url);
+        return this;
     }
 
     @Override
-    public void addPresentation(String name, File file) throws IOException {
+    public CreateMeetingParameters addPresentation(String name, File file) throws IOException {
         documentableTrait.addPresentation(name, file);
+        return this;
     }
 
     @Override

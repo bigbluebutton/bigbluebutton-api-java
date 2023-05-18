@@ -30,21 +30,19 @@ import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 
-class IsMeetingRunningResponseTest extends XMLResponseTestCase {
+class InsertDocumentResponseTest extends XMLResponseTestCase {
 
     @BeforeEach
     public void setUp() {
-        xmlResponseFile = "fixtures/is_meeting_running.xml";
+        xmlResponseFile = "fixtures/insert_document.xml";
 
         super.setUp();
     }
 
     @Test
-    @DisplayName("Meeting running api response content")
-    void testIsMeetingRunningResponseContent() throws StreamReadException, DatabindException, IOException {
-        IsMeetingRunningResponse isMeetingRunningResponse = xmlMapper.readValue(xmlInput,
-                IsMeetingRunningResponse.class);
-        assertEquals(isMeetingRunningResponse.getReturnCode(), APIReturnCode.SUCCESS.getReturnCode());
-        assertEquals(isMeetingRunningResponse.getRunning(), true);
+    @DisplayName("Insert document api response content")
+    void testInsertDocumentResponseContent() throws StreamReadException, DatabindException, IOException {
+        InsertDocumentResponse insertDocumentResponse = xmlMapper.readValue(xmlInput, InsertDocumentResponse.class);
+        assertEquals(insertDocumentResponse.getReturnCode(), APIReturnCode.SUCCESS.getReturnCode());
     }
 }

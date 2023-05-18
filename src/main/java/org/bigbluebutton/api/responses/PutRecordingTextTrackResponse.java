@@ -18,6 +18,34 @@
 
 package org.bigbluebutton.api.responses;
 
-public class PutRecordingTextTrackResponse extends BaseResponse {
+import java.io.IOException;
 
+import org.bigbluebutton.api.deserializers.PutRecordingTextTrackResponseDeserliazer;
+
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import lombok.Getter;
+
+@JsonDeserialize(using = PutRecordingTextTrackResponseDeserliazer.class)
+public class PutRecordingTextTrackResponse extends BaseResponse {
+    @Getter
+    protected String recordId;
+
+    public static PutRecordingTextTrackResponse fromPutRecordingTextTrackResponse(JsonParser parser)
+            throws IOException {
+        PutRecordingTextTrackResponse response     = new PutRecordingTextTrackResponse();
+        JsonNode                      rootNode     = parser.getCodec().readTree(parser);
+        JsonNode                      responseNode = rootNode.get("response");
+
+        if (responseNode != null) {
+            response.messageKey = responseNode.get("messageKey").asText();
+            response.message    = responseNode.get("message").asText();
+            response.recordId   = responseNode.get("recordId").asText();
+            response.returnCode = responseNode.get("returncode").asText();
+        }
+
+        return response;
+    }
 }

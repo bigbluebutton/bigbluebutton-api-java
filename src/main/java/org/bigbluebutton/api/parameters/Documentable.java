@@ -26,12 +26,12 @@ import java.util.Map;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
-public interface Documentable {
+public interface Documentable<T> {
     Map<String, String> getPresentations();
 
-    public void addPresentation(String name, URI url);
+    public T addPresentation(String name, URI url);
 
-    public void addPresentation(String name, File file) throws IOException;
+    public T addPresentation(String name, File file) throws IOException;
 
     public String getPresentationsAsXML() throws ParserConfigurationException, TransformerException;
 }

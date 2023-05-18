@@ -18,6 +18,10 @@
 
 package org.bigbluebutton.api.responses;
 
+import lombok.Getter;
+
 public class UpdateRecordingsResponse extends BaseResponse {
 
+    @Getter
+    private Boolean updated;
 }

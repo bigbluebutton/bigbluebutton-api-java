@@ -16,35 +16,42 @@
  * with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.bigbluebutton.api.responses;
+package org.bigbluebutton.api.test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
-import org.bigbluebutton.api.test.XMLResponseTestCase;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 
-import com.fasterxml.jackson.core.exc.StreamReadException;
-import com.fasterxml.jackson.databind.DatabindException;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-class IsMeetingRunningResponseTest extends XMLResponseTestCase {
+public abstract class JsonResponseTestCase extends BaseTestCase {
+
+    protected String xmlResponseFile;
+
+    protected byte[] jsonInput;
+
+    protected JsonMapper jsonMapper;
 
     @BeforeEach
     public void setUp() {
-        xmlResponseFile = "fixtures/is_meeting_running.xml";
-
         super.setUp();
+        try {
+            jsonInput = Files.readAllBytes(Paths.get(
+                    new File(getClass().getClassLoader().getResource(xmlResponseFile).getFile()).getAbsolutePath()));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            fail("Failed loading fixutre: " + xmlResponseFile);
+        }
+
+        jsonMapper = new JsonMapper();
+        jsonMapper.registerModule(new JavaTimeModule());
+        jsonMapper.findAndRegisterModules();
     }
 
-    @Test
-    @DisplayName("Meeting running api response content")
-    void testIsMeetingRunningResponseContent() throws StreamReadException, DatabindException, IOException {
-        IsMeetingRunningResponse isMeetingRunningResponse = xmlMapper.readValue(xmlInput,
-                IsMeetingRunningResponse.class);
-        assertEquals(isMeetingRunningResponse.getReturnCode(), APIReturnCode.SUCCESS.getReturnCode());
-        assertEquals(isMeetingRunningResponse.getRunning(), true);
-    }
 }

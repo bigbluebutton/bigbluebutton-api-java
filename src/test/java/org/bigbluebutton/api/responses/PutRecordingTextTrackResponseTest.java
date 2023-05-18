@@ -19,10 +19,11 @@
 package org.bigbluebutton.api.responses;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 
-import org.bigbluebutton.api.test.XMLResponseTestCase;
+import org.bigbluebutton.api.test.JsonResponseTestCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,21 +31,21 @@ import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 
-class IsMeetingRunningResponseTest extends XMLResponseTestCase {
+public class PutRecordingTextTrackResponseTest extends JsonResponseTestCase {
 
     @BeforeEach
     public void setUp() {
-        xmlResponseFile = "fixtures/is_meeting_running.xml";
+        xmlResponseFile = "fixtures/put_recording_text_track_success.json";
 
         super.setUp();
     }
 
     @Test
-    @DisplayName("Meeting running api response content")
-    void testIsMeetingRunningResponseContent() throws StreamReadException, DatabindException, IOException {
-        IsMeetingRunningResponse isMeetingRunningResponse = xmlMapper.readValue(xmlInput,
-                IsMeetingRunningResponse.class);
-        assertEquals(isMeetingRunningResponse.getReturnCode(), APIReturnCode.SUCCESS.getReturnCode());
-        assertEquals(isMeetingRunningResponse.getRunning(), true);
+    @DisplayName("API put recording text track scontent")
+    void testPutRecordingTextTrackResponseContent() throws StreamReadException, DatabindException, IOException {
+        PutRecordingTextTrackResponse putRecordingTextTrackResponse = jsonMapper.readValue(jsonInput,
+                PutRecordingTextTrackResponse.class);
+        assertEquals(putRecordingTextTrackResponse.getReturnCode(), APIReturnCode.SUCCESS.getReturnCode());
+        assertTrue(putRecordingTextTrackResponse.success());
     }
 }

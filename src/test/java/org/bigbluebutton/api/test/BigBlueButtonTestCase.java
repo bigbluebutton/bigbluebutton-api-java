@@ -76,7 +76,9 @@ public class BigBlueButtonTestCase extends BaseTestCase {
                 .setSequence(faker.number().numberBetween(1, 5)).setUserCameraCap(faker.number().numberBetween(3, 5))
                 .setVoiceBridge(faker.phoneNumber().extension()).setWebcamsOnlyForModeratorBoolean(faker.bool().bool())
                 .setWelcome(faker.lorem().paragraph())
-                .addMeta(faker.country().countryCode3(), faker.country().capital());
+                .addMeta(faker.country().countryCode3(), faker.country().capital())
+                .addPresentation(faker.country().name() + ".pdf",
+                        URI.create("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"));
         return createParams;
     }
 

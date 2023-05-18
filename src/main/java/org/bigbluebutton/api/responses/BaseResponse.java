@@ -18,21 +18,27 @@
 
 package org.bigbluebutton.api.responses;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import lombok.Getter;
 
 @JacksonXmlRootElement(localName = "response")
+@JsonRootName(value = "response")
 public abstract class BaseResponse {
     @Getter
     @JacksonXmlProperty(localName = "returncode")
+    @JsonProperty(value = "returncode", required = false)
     protected String returnCode;
 
     @Getter
+    @JsonProperty("message")
     protected String message;
 
     @Getter
+    @JsonProperty("messageKey")
     protected String messageKey;
 
     public Boolean success() {

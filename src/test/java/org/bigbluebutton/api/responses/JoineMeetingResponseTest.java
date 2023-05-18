@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.IOException;
 import java.net.URI;
 
-import org.bigbluebutton.api.test.ResponseTestCase;
+import org.bigbluebutton.api.test.XMLResponseTestCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
-public class JoineMeetingResponseTest extends ResponseTestCase {
+public class JoineMeetingResponseTest extends XMLResponseTestCase {
 
     @BeforeEach
     public void setUp() {

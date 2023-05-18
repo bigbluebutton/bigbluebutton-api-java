@@ -36,7 +36,7 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 
 @Accessors(chain = true)
-public class InsertDocumentParameters extends BaseParameters implements Documentable {
+public class InsertDocumentParameters extends BaseParameters implements Documentable<InsertDocumentParameters> {
 
     private DocumentableTrait documentableTrait = new DocumentableTrait();
 
@@ -59,13 +59,15 @@ public class InsertDocumentParameters extends BaseParameters implements Document
     }
 
     @Override
-    public void addPresentation(String name, URI url) {
+    public InsertDocumentParameters addPresentation(String name, URI url) {
         documentableTrait.addPresentation(name, url);
+        return this;
     }
 
     @Override
-    public void addPresentation(String name, File file) throws IOException {
+    public InsertDocumentParameters addPresentation(String name, File file) throws IOException {
         documentableTrait.addPresentation(name, file);
+        return this;
     }
 
     @Override

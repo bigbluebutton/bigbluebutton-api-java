@@ -27,7 +27,7 @@ public class ApiUserDataParams {
 
     // Predefined metas
     public static String BBB_ASK_FOR_FEEDBACK_ON_LOGOUT               = "bbb_ask_for_feedback_on_logout";
-    public static String bbb_override_default_locale                  = "bbb_override_default_locale";
+    public static String BBB_OVERRIDE_DEFAULT_LOCALE                  = "bbb_override_default_locale";
     public static String BBB_AUTO_JOIN_AUDIO                          = "bbb_auto_join_audio";
     public static String BBB_AUTO_SHARE_WEBCAM                        = "bbb_auto_share_webcam";
     public static String BBB_PREFERRED_CAMERA_PROFILE                 = "bbb_preferred_camera_profile";

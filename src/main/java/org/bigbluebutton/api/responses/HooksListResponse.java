@@ -18,6 +18,18 @@
 
 package org.bigbluebutton.api.responses;
 
-public class HooksListResponse extends BaseResponse {
+import java.util.List;
 
+import org.bigbluebutton.api.data.Hook;
+
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+
+import lombok.Getter;
+
+public class HooksListResponse extends BaseResponse {
+    @Getter
+    @JacksonXmlElementWrapper(localName = "hooks")
+    @JacksonXmlProperty(localName = "hook")
+    private List<Hook> hooks;
 }

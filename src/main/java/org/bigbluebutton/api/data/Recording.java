@@ -16,17 +16,50 @@
  * with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.bigbluebutton.api.responses;
+package org.bigbluebutton.api.data;
 
+import java.time.Instant;
 import java.util.List;
 
-import org.bigbluebutton.api.data.Recording;
+import org.bigbluebutton.api.deserializers.MetadataDeserializer;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
-public class GetRecordingsResponse extends BaseResponse {
-    @JacksonXmlElementWrapper(localName = "recordings")
-    @JacksonXmlProperty(localName = "recording")
-    private List<Recording> recordings;
+import lombok.Getter;
+
+public class Recording {
+
+    @Getter
+    @JacksonXmlProperty(localName = "recordID")
+    private String recordId;
+
+    @Getter
+    @JacksonXmlProperty(localName = "meetingID")
+    private String meetingId;
+
+    @Getter
+    private String name;
+
+    @Getter
+    private Boolean published;
+
+    @Getter
+    private String state;
+
+    @Getter
+    private Instant startTime;
+
+    @Getter
+    private Instant endTime;
+
+    @JsonDeserialize(using = MetadataDeserializer.class)
+    @JsonProperty(required = false)
+    private List<Metadata> metadata;
+
+    @JacksonXmlElementWrapper(localName = "playback")
+    @JacksonXmlProperty(localName = "format")
+    private List<Playback> playbacks;
 }

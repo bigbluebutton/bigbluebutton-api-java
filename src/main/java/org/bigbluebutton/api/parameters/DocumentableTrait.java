@@ -20,6 +20,7 @@ package org.bigbluebutton.api.parameters;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -41,7 +42,7 @@ import org.apache.commons.io.FileUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class DocumentableTrait implements Documentable {
+public class DocumentableTrait implements Documentable<DocumentableTrait> {
 
     private Map<String, String> presentations = new LinkedHashMap<>();
 
@@ -51,13 +52,15 @@ public class DocumentableTrait implements Documentable {
     }
 
     @Override
-    public void addPresentation(String name, URI url) {
+    public DocumentableTrait addPresentation(String name, URI url) {
         presentations.put(name, url.toString());
+        return this;
     }
 
     @Override
-    public void addPresentation(String name, File file) throws IOException {
+    public DocumentableTrait addPresentation(String name, File file) throws IOException {
         presentations.put(name, base64EncodeFile(file));
+        return this;
     }
 
     @Override
@@ -98,12 +101,12 @@ public class DocumentableTrait implements Documentable {
 
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer        transformer        = transformerFactory.newTransformer();
-        DOMSource          source             = new DOMSource(doc);
-        StreamResult       result             = new StreamResult(System.out);
+        StringWriter writer = new StringWriter();
+        StreamResult result = new StreamResult(writer);
 
-        transformer.transform(source, result);
+        transformer.transform(new DOMSource(doc), result);
 
-        return result.getWriter().toString();
+        return writer.toString();
     }
 
     private boolean isURL(String str) {

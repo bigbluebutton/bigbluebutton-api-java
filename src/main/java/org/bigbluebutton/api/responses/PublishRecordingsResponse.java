@@ -18,6 +18,9 @@
 
 package org.bigbluebutton.api.responses;
 
-public class PublishRecordingsResponse extends BaseResponse {
+import lombok.Getter;
 
+public class PublishRecordingsResponse extends BaseResponse {
+    @Getter
+    private Boolean published;
 }

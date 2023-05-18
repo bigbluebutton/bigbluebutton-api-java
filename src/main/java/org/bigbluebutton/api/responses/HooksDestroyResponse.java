@@ -18,6 +18,10 @@
 
 package org.bigbluebutton.api.responses;
 
+import lombok.Getter;
+
 public class HooksDestroyResponse extends BaseResponse {
 
+    @Getter
+    private Boolean removed;
 }

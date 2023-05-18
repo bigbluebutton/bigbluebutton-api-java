@@ -18,6 +18,11 @@
 
 package org.bigbluebutton.api.responses;
 
-public class GetRecordingTextTracksResponse extends BaseResponse {
+import org.bigbluebutton.api.data.json.Response;
 
+import lombok.Getter;
+
+public class GetRecordingTextTracksResponse extends BaseResponse {
+    @Getter
+    protected Response response;
 }

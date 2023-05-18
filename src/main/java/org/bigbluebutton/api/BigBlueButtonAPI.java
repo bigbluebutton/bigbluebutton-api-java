@@ -376,7 +376,6 @@ public class BigBlueButtonAPI {
             StringEntity requestEntity = new StringEntity(payload);
             httpRequest.setEntity(requestEntity);
             httpRequest.setHeader(HttpHeaders.CONTENT_TYPE, contentType);
-            httpRequest.setHeader(HttpHeaders.CONTENT_LENGTH, String.valueOf(payload.length()));
         }
 
         httpRequest.setHeader(HttpHeaders.CONTENT_ENCODING, StandardCharsets.UTF_8);

@@ -28,6 +28,7 @@ import org.bigbluebutton.api.responses.BaseResponse;
 import org.bigbluebutton.api.util.DateTimeUtil;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
@@ -44,6 +45,7 @@ public class Meeting extends BaseResponse {
 
     @JacksonXmlElementWrapper(localName = "attendees")
     @JacksonXmlProperty(localName = "attendee")
+    @JsonProperty(required = false)
     private List<Attendee> attendees;
 
     @Getter
@@ -107,6 +109,7 @@ public class Meeting extends BaseResponse {
     private Integer moderatorCount;
 
     @JsonDeserialize(using = MetadataDeserializer.class)
+    @JsonProperty(required = false)
     private List<Metadata> metadata;
 
     @Getter

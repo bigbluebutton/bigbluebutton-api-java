@@ -18,6 +18,18 @@
 
 package org.bigbluebutton.api.responses;
 
-public class HooksCreateResponse extends BaseResponse {
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+import lombok.Getter;
+
+public class HooksCreateResponse extends BaseResponse {
+    @Getter
+    @JacksonXmlProperty(localName = "hookID")
+    private String hookId;
+
+    @Getter
+    private Boolean permanentHook;
+
+    @Getter
+    private Boolean rawData;
 }

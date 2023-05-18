@@ -16,35 +16,26 @@
  * with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.bigbluebutton.api.responses;
+package org.bigbluebutton.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.io.IOException;
-
-import org.bigbluebutton.api.test.XMLResponseTestCase;
-import org.junit.jupiter.api.BeforeEach;
+import org.bigbluebutton.api.test.BaseTestCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.fasterxml.jackson.core.exc.StreamReadException;
-import com.fasterxml.jackson.databind.DatabindException;
-
-class IsMeetingRunningResponseTest extends XMLResponseTestCase {
-
-    @BeforeEach
-    public void setUp() {
-        xmlResponseFile = "fixtures/is_meeting_running.xml";
-
-        super.setUp();
-    }
+public class ApiMetaParamsTest extends BaseTestCase {
 
     @Test
-    @DisplayName("Meeting running api response content")
-    void testIsMeetingRunningResponseContent() throws StreamReadException, DatabindException, IOException {
-        IsMeetingRunningResponse isMeetingRunningResponse = xmlMapper.readValue(xmlInput,
-                IsMeetingRunningResponse.class);
-        assertEquals(isMeetingRunningResponse.getReturnCode(), APIReturnCode.SUCCESS.getReturnCode());
-        assertEquals(isMeetingRunningResponse.getRunning(), true);
+    @DisplayName("Test API meta parameters names")
+    void apiMethodNamesShouldMatch() {
+
+        assertEquals(ApiMetaParams.META_PREFIX, "meta_");
+        assertEquals(ApiMetaParams.END_CALLBACK_URL, "endCallbackUrl");
+        assertEquals(ApiMetaParams.BBB_RECORDING_READY_URL, "bbb-recording-ready-url");
+        assertEquals(ApiMetaParams.CANVAS_RECORDING_READY_URL, "canvas-recording-ready-url");
+        assertEquals(ApiMetaParams.BBB_ANONYMIZE_CHAT, "bbb-anonymize-chat");
+        assertEquals(ApiMetaParams.BBB_ANONYMIZE_MODERATORS, "bbb-anonymize-moderators");
+        assertEquals(ApiMetaParams.HACK_RECORD_VIEWER_VIDEO, "hack-record-viewer-video");
     }
 }

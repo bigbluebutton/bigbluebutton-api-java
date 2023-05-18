@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 
-import org.bigbluebutton.api.test.ResponseTestCase;
+import org.bigbluebutton.api.test.XMLResponseTestCase;
 import org.bigbluebutton.api.util.DateTimeUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -33,7 +33,7 @@ import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 
-class CreateMeetingResponseTest extends ResponseTestCase {
+class CreateMeetingResponseTest extends XMLResponseTestCase {
 
     @BeforeEach
     public void setUp() {
