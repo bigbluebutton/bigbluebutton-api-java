@@ -18,28 +18,52 @@
 
 package org.bigbluebutton.api.test;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
 import org.bigbluebutton.api.ApiParams;
+import org.bigbluebutton.api.BigBlueButtonAPI;
 import org.bigbluebutton.api.enums.GuestPolicy;
 import org.bigbluebutton.api.enums.MeetingLayout;
+import org.bigbluebutton.api.enums.Role;
 import org.bigbluebutton.api.parameters.CreateMeetingParameters;
 import org.bigbluebutton.api.parameters.EndMeetingParameters;
+import org.bigbluebutton.api.parameters.JoinMeetingParameters;
+import org.bigbluebutton.api.responses.CreateMeetingResponse;
 import org.junit.jupiter.api.BeforeEach;
+import org.xml.sax.SAXException;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.github.javafaker.Faker;
 
 public class BigBlueButtonTestCase extends BaseTestCase {
 
-    private Faker faker;
+    protected Faker faker;
 
     @BeforeEach
     public void setUp() {
         super.setUp();
         faker = new Faker();
+    }
+
+    protected CreateMeetingResponse realMeeting()
+            throws JsonMappingException, JsonProcessingException, MalformedURLException, IOException,
+            ParserConfigurationException, SAXException, InterruptedException, URISyntaxException, TransformerException {
+        CreateMeetingParameters createMeetingParms = generateCreateMeetingParams();
+
+        BigBlueButtonAPI bbbApi = new BigBlueButtonAPI();
+
+        CreateMeetingResponse response = bbbApi.createMeeting(createMeetingParms);
+        return response;
     }
 
     protected CreateMeetingParameters generateCreateMeetingParams() {
@@ -76,9 +100,7 @@ public class BigBlueButtonTestCase extends BaseTestCase {
                 .setSequence(faker.number().numberBetween(1, 5)).setUserCameraCap(faker.number().numberBetween(3, 5))
                 .setVoiceBridge(faker.phoneNumber().extension()).setWebcamsOnlyForModeratorBoolean(faker.bool().bool())
                 .setWelcome(faker.lorem().paragraph())
-                .addMeta(faker.country().countryCode3(), faker.country().capital())
-                .addPresentation(faker.country().name() + ".pdf",
-                        URI.create("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"));
+                .addMeta(faker.country().countryCode3(), faker.country().capital());
         return createParams;
     }
 
@@ -86,6 +108,13 @@ public class BigBlueButtonTestCase extends BaseTestCase {
         Map<String, Object>  mockEnd   = mockEndMeetingParams();
         EndMeetingParameters endParams = new EndMeetingParameters((String) mockEnd.get(ApiParams.MEETING_ID));
         return endParams;
+    }
+
+    protected JoinMeetingParameters generateJoinMeetingParams() {
+        Map<String, Object>   mockJoin   = mockJoinMeetingParams();
+        JoinMeetingParameters joinParams = new JoinMeetingParameters((String) mockJoin.get(ApiParams.FULL_NAME),
+                (String) mockJoin.get(ApiParams.MEETING_ID), (Role) mockJoin.get(ApiParams.ROLE));
+        return joinParams;
     }
 
     protected Map<String, Object> mockCreateMeetingParams() {
@@ -97,7 +126,17 @@ public class BigBlueButtonTestCase extends BaseTestCase {
 
     protected Map<String, Object> mockEndMeetingParams() {
         Map<String, Object> paramsMap = new HashMap<>();
+
         paramsMap.put(ApiParams.MEETING_ID, faker.code().isbn10());
         return paramsMap;
     }
+
+    protected Map<String, Object> mockJoinMeetingParams() {
+        Map<String, Object> paramsMap = new HashMap<>();
+        paramsMap.put(ApiParams.FULL_NAME, faker.name().fullName());
+        paramsMap.put(ApiParams.ROLE, Role.values()[new Random().nextInt(Role.values().length)]);
+        paramsMap.put(ApiParams.MEETING_ID, faker.code().isbn10());
+        return paramsMap;
+    }
+
 }

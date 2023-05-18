@@ -18,11 +18,31 @@
 
 package org.bigbluebutton.api.responses;
 
-import org.bigbluebutton.api.data.json.Response;
+import java.util.List;
+
+import org.bigbluebutton.api.data.Track;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 import lombok.Getter;
 
 public class GetRecordingTextTracksResponse extends BaseResponse {
     @Getter
-    protected Response response;
+    protected InternalResponse response;
+
+    public List<Track> getTracks() {
+        return response.getTracks();
+    }
+
+    public static class InternalResponse {
+        @Getter
+        @JacksonXmlProperty(localName = "returncode")
+        @JsonProperty("returncode")
+        protected String returnCode;
+
+        @Getter
+        @JsonProperty("tracks")
+        private List<Track> tracks;
+    }
 }

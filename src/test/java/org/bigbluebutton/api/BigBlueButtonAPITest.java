@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -53,7 +54,7 @@ public class BigBlueButtonAPITest extends BigBlueButtonTestCase {
     }
 
     @Test
-    @DisplayName("BigBlueButton API version")
+    @DisplayName("API version")
     public void fetchAPIVersion() throws MalformedURLException, IOException, ParserConfigurationException, SAXException,
             InterruptedException, URISyntaxException {
         ApiVersionResponse apiVersion = bbbAPI.getAPIVersion();
@@ -64,7 +65,7 @@ public class BigBlueButtonAPITest extends BigBlueButtonTestCase {
     }
 
     @Test
-    @DisplayName("BigBlueButton Create meeting")
+    @DisplayName("Create meeting")
     public void shouldCreateMeeting()
             throws JsonMappingException, JsonProcessingException, MalformedURLException, IOException,
             ParserConfigurationException, SAXException, InterruptedException, URISyntaxException, TransformerException {
@@ -75,11 +76,48 @@ public class BigBlueButtonAPITest extends BigBlueButtonTestCase {
     }
 
     @Test
-    @DisplayName("BigBlueButton end non existing meeting")
+    @DisplayName("Create meeting with a presentation")
+    public void shouldCreateMeetingWithAPresetnation()
+            throws JsonMappingException, JsonProcessingException, MalformedURLException, IOException,
+            ParserConfigurationException, SAXException, InterruptedException, URISyntaxException, TransformerException {
+        CreateMeetingParameters createMeetingParms = generateCreateMeetingParams();
+        createMeetingParms.addPresentation(faker.country().name() + ".pdf",
+                URI.create("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"));
+        CreateMeetingResponse createMeetingResponse = bbbAPI.createMeeting(createMeetingParms);
+        assertEquals(createMeetingResponse.getReturnCode(), APIReturnCode.SUCCESS.getReturnCode());
+        assertEquals(createMeetingResponse.getMeetingId(), createMeetingParms.getMeetingId());
+    }
+
+    @Test
+    @DisplayName("Create meeting with an image as presentation")
+    public void shouldCreateMeetingWithAnImage()
+            throws JsonMappingException, JsonProcessingException, MalformedURLException, IOException,
+            ParserConfigurationException, SAXException, InterruptedException, URISyntaxException, TransformerException {
+        CreateMeetingParameters createMeetingParms = generateCreateMeetingParams();
+        createMeetingParms.addPresentation(faker.country().name() + ".jpg",
+                URI.create("https://picsum.photos/3840/2160/?random"));
+        CreateMeetingResponse createMeetingResponse = bbbAPI.createMeeting(createMeetingParms);
+        assertEquals(createMeetingResponse.getReturnCode(), APIReturnCode.SUCCESS.getReturnCode());
+        assertEquals(createMeetingResponse.getMeetingId(), createMeetingParms.getMeetingId());
+    }
+
+    @Test
+    @DisplayName("End a non-existing meeting")
     public void shouldNotFindMeetingToEnd() throws JsonMappingException, JsonProcessingException, MalformedURLException,
             IOException, ParserConfigurationException, SAXException, InterruptedException, URISyntaxException {
         EndMeetingParameters endMeetingParms    = generateEndMeetingParams();
         EndMeetingResponse   endMeetingResponse = bbbAPI.endMeeting(endMeetingParms);
         assertEquals(endMeetingResponse.getReturnCode(), APIReturnCode.FAILED.getReturnCode());
+    }
+
+    @Test
+    @DisplayName("End a real existing meeting")
+    public void shouldEndRealMeeting()
+            throws JsonMappingException, JsonProcessingException, MalformedURLException, IOException,
+            ParserConfigurationException, SAXException, InterruptedException, URISyntaxException, TransformerException {
+        String meetingId = realMeeting().getMeetingId();
+        Thread.sleep(500);
+        EndMeetingResponse endMeetingResponse = bbbAPI.endMeeting(new EndMeetingParameters(meetingId));
+        assertEquals(endMeetingResponse.getReturnCode(), APIReturnCode.SUCCESS.getReturnCode());
     }
 }

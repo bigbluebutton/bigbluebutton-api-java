@@ -20,6 +20,7 @@ package org.bigbluebutton.api.responses;
 
 import java.net.URI;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 import lombok.Getter;
@@ -27,23 +28,29 @@ import lombok.Getter;
 public class JoinMeetingResponse extends BaseResponse {
     @Getter
     @JacksonXmlProperty(localName = "meeting_id")
+    @JsonProperty(required = false)
     private String meetingId;
 
     @Getter
     @JacksonXmlProperty(localName = "user_id")
+    @JsonProperty(required = false)
     private String userId;
 
     @Getter
+    @JsonProperty(required = false)
     @JacksonXmlProperty(localName = "auth_token")
     private String authToken;
 
     @Getter
     @JacksonXmlProperty(localName = "session_token")
+    @JsonProperty(required = false)
     private String sessionToken;
 
     @Getter
+    @JsonProperty(required = false)
     private String guestStatus;
 
     @Getter
+    @JsonProperty(required = false)
     private URI url;
 }
